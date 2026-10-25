@@ -1038,7 +1038,13 @@ function render(){
 
     label.textContent="昼";
 
-    count.textContent=(dayIndex+1)+" / 9";
+    // 昼5/9だけ「正午」と表示
+
+    count.textContent=dayIndex===4
+
+      ?"正午"
+
+      :(dayIndex+1)+" / 9";
 
   }
 
