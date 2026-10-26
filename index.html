@@ -8,7 +8,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <meta name="theme-color" content="#101e49">
 
@@ -16,163 +16,453 @@
 
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<title>クロノス管理アプリ</title>
+<meta name="apple-mobile-web-app-title" content="クロノス管理">
+
+<title>クロノス管理</title>
 
 <style>
 
-*{box-sizing:border-box}
+* {
 
-body{
-
-  margin:0;
-
-  padding:12px 12px 28px;
-
-  background:linear-gradient(#101e49,#1b3171);
-
-  background-attachment:fixed;
-
-  color:#f5e9cb;
-
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-
-  text-align:center;
+  box-sizing: border-box;
 
 }
 
-h2{
+:root {
 
-  font-size:18px;
+  --page-height: 100dvh;
 
-  letter-spacing:3px;
+  --clock-size: min(88vw, 350px, 39dvh);
 
-  margin:10px 0;
+  --gap: 8px;
 
-}
+  --panel-padding: 10px;
 
-.panel{
+  --hp-size: 46px;
 
-  background:#293b85;
-
-  border:1px solid #8e9dcb;
-
-  border-radius:14px;
-
-  padding:12px;
-
-  margin:10px auto;
-
-  max-width:420px;
+  --button-height: 43px;
 
 }
 
-/* プレイヤー1だけ180度回転 */
+html {
 
-.player-one{
+  margin: 0;
 
-  transform:rotate(180deg);
+  min-height: 100%;
 
-}
-
-.hp{
-
-  font-size:52px;
-
-  font-weight:bold;
-
-  color:white;
-
-  margin:5px;
+  background: #101e49;
 
 }
 
-.controls,.move{
+body {
 
-  display:flex;
+  margin: 0;
 
-  justify-content:center;
+  min-height: var(--page-height);
 
-  align-items:center;
+  padding:
 
-  gap:7px;
+    max(5px, env(safe-area-inset-top))
 
-}
+    10px
 
-button{
+    max(8px, env(safe-area-inset-bottom));
 
-  background:#465a9c;
+  background: linear-gradient(
 
-  color:white;
+    180deg,
 
-  border:1px solid #aab8e0;
+    #101e49 0%,
 
-  border-radius:9px;
+    #1b3171 100%
 
-  padding:12px;
+  );
 
-  font-size:17px;
+  color: #f5e9cb;
 
-  touch-action:manipulation;
+  font-family:
 
-  cursor:pointer;
+    -apple-system,
 
-  -webkit-tap-highlight-color:transparent;
+    BlinkMacSystemFont,
 
-}
+    "Helvetica Neue",
 
-.controls button{
+    sans-serif;
 
-  flex:1;
+  text-align: center;
 
-  padding:12px 4px;
-
-}
-
-button:active{background:#8094d1}
-
-svg{
-
-  display:block;
-
-  width:100%;
-
-  max-width:350px;
-
-  margin:auto;
+  -webkit-text-size-adjust: 100%;
 
 }
 
-.move{
+.app {
 
-  margin:12px 0;
+  width: 100%;
 
-  gap:18px;
+  max-width: 460px;
+
+  min-height: calc(
+
+    var(--page-height) -
+
+    env(safe-area-inset-top) -
+
+    env(safe-area-inset-bottom) -
+
+    13px
+
+  );
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: stretch;
+
+  justify-content: center;
+
+  gap: var(--gap);
 
 }
 
-.move button{min-width:120px}
+h1 {
 
-.small{
+  margin: 0;
 
-  font-size:12px;
+  font-size: 17px;
 
-  color:#d4def5;
+  font-weight: 650;
 
-}
+  letter-spacing: 3px;
 
-.active{
-
-  filter:drop-shadow(0 0 5px #ffe5a0)
-
-         drop-shadow(0 0 10px #ffd36a);
+  line-height: 1.4;
 
 }
 
-.reset{
+.panel {
 
-  margin:12px 0 20px;
+  width: 100%;
 
-  padding:12px 25px;
+  padding: var(--panel-padding);
+
+  background: #293b85;
+
+  border: 1px solid #8e9dcb;
+
+  border-radius: 13px;
+
+  flex-shrink: 0;
+
+}
+
+/* プレイヤー1は対面用に180度回転 */
+
+.player-one {
+
+  transform: rotate(180deg);
+
+}
+
+.player-name {
+
+  font-size: 16px;
+
+  line-height: 1.2;
+
+}
+
+.hp {
+
+  margin: 3px 0 6px;
+
+  color: #fff;
+
+  font-size: var(--hp-size);
+
+  line-height: 1.05;
+
+  font-weight: 750;
+
+  font-variant-numeric: tabular-nums;
+
+}
+
+.hp-controls {
+
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 6px;
+
+  width: 100%;
+
+}
+
+button {
+
+  appearance: none;
+
+  -webkit-appearance: none;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #465a9c;
+
+  color: #fff;
+
+  border: 1px solid #aab8e0;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  touch-action: manipulation;
+
+  -webkit-tap-highlight-color: transparent;
+
+}
+
+button:active {
+
+  background: #8094d1;
+
+}
+
+.hp-controls button {
+
+  width: 100%;
+
+  min-width: 0;
+
+  height: var(--button-height);
+
+  padding: 0 2px;
+
+  font-size: 16px;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  word-break: keep-all;
+
+  overflow-wrap: normal;
+
+  letter-spacing: -0.3px;
+
+}
+
+.clock-section {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 2px;
+
+  flex-shrink: 0;
+
+}
+
+.clock-caption {
+
+  font-size: 12px;
+
+  color: #d4def5;
+
+  line-height: 1.3;
+
+}
+
+#clock {
+
+  display: block;
+
+  width: var(--clock-size);
+
+  height: var(--clock-size);
+
+  max-width: 100%;
+
+  overflow: visible;
+
+  flex-shrink: 0;
+
+}
+
+.move {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 14px;
+
+  flex-shrink: 0;
+
+}
+
+.move button {
+
+  width: min(39%, 155px);
+
+  height: var(--button-height);
+
+  font-size: 16px;
+
+  white-space: nowrap;
+
+}
+
+.footer {
+
+  display: flex;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+}
+
+.reset {
+
+  min-height: 36px;
+
+  padding: 7px 18px;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+
+}
+
+/* 画面の高さが低いiPhoneやSafari用 */
+
+@media (max-height: 850px) {
+
+  :root {
+
+    --clock-size: min(82vw, 305px, 36dvh);
+
+    --gap: 6px;
+
+    --panel-padding: 8px;
+
+    --hp-size: 39px;
+
+    --button-height: 38px;
+
+  }
+
+  h1 {
+
+    font-size: 15px;
+
+  }
+
+  .player-name {
+
+    font-size: 14px;
+
+  }
+
+  .hp-controls button {
+
+    font-size: 15px;
+
+  }
+
+  .move button {
+
+    font-size: 15px;
+
+  }
+
+}
+
+/* Safariのアドレスバーで表示領域が狭い場合 */
+
+@media (max-height: 700px) {
+
+  :root {
+
+    --clock-size: min(76vw, 260px, 34dvh);
+
+    --gap: 4px;
+
+    --panel-padding: 6px;
+
+    --hp-size: 34px;
+
+    --button-height: 34px;
+
+  }
+
+  h1 {
+
+    font-size: 14px;
+
+  }
+
+  .player-name {
+
+    font-size: 13px;
+
+  }
+
+  .hp {
+
+    margin: 1px 0 4px;
+
+  }
+
+  .hp-controls button {
+
+    font-size: 14px;
+
+  }
+
+  .reset {
+
+    min-height: 30px;
+
+    padding: 5px 14px;
+
+  }
+
+}
+
+/* 横幅が狭い端末でもHPボタンは1行 */
+
+@media (max-width: 360px) {
+
+  .hp-controls {
+
+    gap: 4px;
+
+  }
+
+  .hp-controls button {
+
+    font-size: 14px;
+
+    padding: 0 1px;
+
+  }
 
 }
 
@@ -182,975 +472,1305 @@ svg{
 
 <body>
 
-<h2>クロノス管理</h2>
+<main class="app">
 
-<!-- プレイヤー1：180度回転 -->
+  <h1>クロノス管理</h1>
 
-<div class="panel player-one">
+  <!-- プレイヤー1：180度回転 -->
 
-  <div>プレイヤー1</div>
+  <section class="panel player-one">
 
-  <div class="hp" id="hp0">100</div>
+    <div class="player-name">プレイヤー1</div>
 
-  <div class="controls">
+    <div class="hp" id="hp0">100</div>
 
-    <button data-hp="0" data-delta="-20">−20</button>
+    <div class="hp-controls">
 
-    <button data-hp="0" data-delta="-10">−10</button>
+      <button type="button" data-hp="0" data-delta="-20">−20</button>
 
-    <button data-hp="0" data-delta="10">＋10</button>
+      <button type="button" data-hp="0" data-delta="-10">−10</button>
 
-    <button data-hp="0" data-delta="20">＋20</button>
+      <button type="button" data-hp="0" data-delta="10">＋10</button>
 
-  </div>
+      <button type="button" data-hp="0" data-delta="20">＋20</button>
 
-</div>
+    </div>
 
-<div class="small">現在のクロノス</div>
+  </section>
 
-<svg id="clock" viewBox="0 0 360 360"></svg>
+  <section class="clock-section">
 
-<div class="move">
+    <div class="clock-caption">現在のクロノス</div>
 
-  <button id="back">◀ 戻る</button>
+    <svg
 
-  <button id="forward">進む ▶</button>
+      id="clock"
 
-</div>
+      viewBox="0 0 360 360"
 
-<div class="panel">
+      role="img"
 
-  <div>プレイヤー2</div>
+      aria-label="クロノス18マス"
 
-  <div class="hp" id="hp1">100</div>
+    ></svg>
 
-  <div class="controls">
+  </section>
 
-    <button data-hp="1" data-delta="-20">−20</button>
+  <div class="move">
 
-    <button data-hp="1" data-delta="-10">−10</button>
+    <button type="button" id="back">◀ 戻る</button>
 
-    <button data-hp="1" data-delta="10">＋10</button>
-
-    <button data-hp="1" data-delta="20">＋20</button>
+    <button type="button" id="forward">進む ▶</button>
 
   </div>
 
-</div>
+  <!-- プレイヤー2 -->
 
-<button class="reset" id="reset">
+  <section class="panel">
 
-すべてリセット
+    <div class="player-name">プレイヤー2</div>
 
-</button>
+    <div class="hp" id="hp1">100</div>
+
+    <div class="hp-controls">
+
+      <button type="button" data-hp="1" data-delta="-20">−20</button>
+
+      <button type="button" data-hp="1" data-delta="-10">−10</button>
+
+      <button type="button" data-hp="1" data-delta="10">＋10</button>
+
+      <button type="button" data-hp="1" data-delta="20">＋20</button>
+
+    </div>
+
+  </section>
+
+  <div class="footer">
+
+    <button type="button" class="reset" id="reset">
+
+      すべてリセット
+
+    </button>
+
+  </div>
+
+</main>
 
 <script>
 
-(function(){
+(function () {
 
-"use strict";
+  "use strict";
 
-let hp=[100,100];
+  const STORAGE_KEY = "chronos-state-v1";
 
-// 初期位置：夜5（真夜中）
+  let hp = [100, 100];
 
-let pos=4;
+  // 初期位置：夜5（真夜中）
 
-// 保存済みの状態を読み込む
+  let pos = 4;
 
-try{
+  // 保存済みの状態を復元
 
-  const saved=JSON.parse(
+  try {
 
-    localStorage.getItem("chronos-state-v1")
+    const saved = JSON.parse(
 
-  );
-
-  if(saved){
-
-    if(Array.isArray(saved.hp)&&saved.hp.length===2){
-
-      hp=saved.hp.map(function(v){
-
-        const n=Number(v);
-
-        return Number.isFinite(n)
-
-          ?Math.max(0,Math.min(100,n))
-
-          :100;
-
-      });
-
-    }
-
-    if(Number.isInteger(saved.pos)&&
-
-       saved.pos>=0&&saved.pos<18){
-
-      pos=saved.pos;
-
-    }
-
-  }
-
-}catch(e){}
-
-function saveState(){
-
-  try{
-
-    localStorage.setItem(
-
-      "chronos-state-v1",
-
-      JSON.stringify({hp:hp,pos:pos})
+      localStorage.getItem(STORAGE_KEY)
 
     );
 
-  }catch(e){}
+    if (saved) {
 
-}
+      if (
 
-const ns="http://www.w3.org/2000/svg";
+        Array.isArray(saved.hp) &&
 
-const svg=document.getElementById("clock");
+        saved.hp.length === 2
 
-function el(tag,attrs,parent=svg){
+      ) {
 
-  const e=document.createElementNS(ns,tag);
+        hp = saved.hp.map(function (value) {
 
-  for(const k in attrs){
+          const n = Number(value);
 
-    e.setAttribute(k,attrs[k]);
+          return Number.isFinite(n)
+
+            ? Math.max(0, Math.min(100, n))
+
+            : 100;
+
+        });
+
+      }
+
+      if (
+
+        Number.isInteger(saved.pos) &&
+
+        saved.pos >= 0 &&
+
+        saved.pos < 18
+
+      ) {
+
+        pos = saved.pos;
+
+      }
+
+    }
+
+  } catch (error) {}
+
+  function saveState() {
+
+    try {
+
+      localStorage.setItem(
+
+        STORAGE_KEY,
+
+        JSON.stringify({
+
+          hp: hp,
+
+          pos: pos
+
+        })
+
+      );
+
+    } catch (error) {}
 
   }
 
-  parent.appendChild(e);
+  const ns = "http://www.w3.org/2000/svg";
 
-  return e;
+  const svg = document.getElementById("clock");
 
-}
+  function el(tag, attrs, parent = svg) {
 
-// グラデーション
+    const element = document.createElementNS(ns, tag);
 
-const defs=el("defs",{});
+    for (const key in attrs) {
 
-function gradient(id,colors){
+      element.setAttribute(key, attrs[key]);
 
-  const g=el("linearGradient",{
+    }
 
-    id:id,x1:"0%",y1:"0%",x2:"0%",y2:"100%"
+    parent.appendChild(element);
 
-  },defs);
-
-  colors.forEach(function(c,i){
-
-    el("stop",{
-
-      offset:(i/(colors.length-1)*100)+"%",
-
-      "stop-color":c
-
-    },g);
-
-  });
-
-}
-
-// 昼1〜9の空
-
-gradient("day1",["#07132d","#283b65","#e07b55"]);
-
-gradient("day2",["#263d73","#d66b66","#ffc16b"]);
-
-gradient("day3",["#468cc3","#8fc7dc","#ffe0a1"]);
-
-gradient("day4",["#2b8bd0","#80c7eb","#d5eefa"]);
-
-gradient("day6",["#398bc9","#7dbbdf","#d7e9f4"]);
-
-gradient("day7",["#456ca1","#eaa064","#f8c06e"]);
-
-gradient("day8",["#493b70","#cc5a65","#ff9b52"]);
-
-gradient("day9",["#101e43","#42385d","#ad5265"]);
-
-// 月と太陽の色
-
-const moonGradient=el("radialGradient",{
-
-  id:"moonGlow"
-
-},defs);
-
-el("stop",{
-
-  offset:"0%","stop-color":"#fff6c8"
-
-},moonGradient);
-
-el("stop",{
-
-  offset:"70%","stop-color":"#f2d99a"
-
-},moonGradient);
-
-el("stop",{
-
-  offset:"100%","stop-color":"#d7b66f"
-
-},moonGradient);
-
-const sunGradient=el("radialGradient",{
-
-  id:"sunGlow"
-
-},defs);
-
-el("stop",{
-
-  offset:"0%","stop-color":"#fff7bf"
-
-},sunGradient);
-
-el("stop",{
-
-  offset:"65%","stop-color":"#ffda69"
-
-},sunGradient);
-
-el("stop",{
-
-  offset:"100%","stop-color":"#ff9c36"
-
-},sunGradient);
-
-// クロノス外周
-
-el("circle",{
-
-  cx:180,cy:180,r:176,
-
-  fill:"#172755",
-
-  stroke:"#9badd7",
-
-  "stroke-width":1.5
-
-});
-
-// 昼夜の境界
-
-el("line",{
-
-  x1:7,y1:180,x2:353,y2:180,
-
-  stroke:"#7286ba",
-
-  "stroke-opacity":".45"
-
-});
-
-// 月の満ち欠け
-
-function moonPhase(parent,index,r){
-
-  const illuminated=
-
-    (1-Math.cos(2*Math.PI*index/8))/2;
-
-  el("circle",{
-
-    r:r,
-
-    fill:"#0c1734",
-
-    stroke:"#b3c1d9",
-
-    "stroke-opacity":".45",
-
-    "stroke-width":".7"
-
-  },parent);
-
-  if(illuminated<.01)return;
-
-  if(illuminated>.99){
-
-    el("circle",{
-
-      r:r,
-
-      fill:"url(#moonGlow)"
-
-    },parent);
-
-    return;
+    return element;
 
   }
 
-  const waxing=index<4;
+  // グラデーション設定
 
-  const rx=Math.abs(1-2*illuminated)*r;
+  const defs = el("defs", {});
 
-  const sweepOuter=waxing?1:0;
+  function gradient(id, colors) {
 
-  const sweepInner=illuminated<.5
+    const g = el("linearGradient", {
 
-    ?(waxing?0:1)
+      id: id,
 
-    :(waxing?1:0);
+      x1: "0%",
 
-  const d=
+      y1: "0%",
 
-    "M 0 "+(-r)+
+      x2: "0%",
 
-    " A "+r+" "+r+" 0 0 "+sweepOuter+
+      y2: "100%"
 
-    " 0 "+r+
+    }, defs);
 
-    " A "+rx+" "+r+" 0 0 "+sweepInner+
+    colors.forEach(function (color, index) {
 
-    " 0 "+(-r)+" Z";
+      el("stop", {
 
-  el("path",{
+        offset:
 
-    d:d,
+          (index / (colors.length - 1) * 100) + "%",
 
-    fill:"url(#moonGlow)"
+        "stop-color": color
 
-  },parent);
-
-}
-
-// 従来の太陽（昼5/9）
-
-function sun(parent,r){
-
-  for(let j=0;j<8;j++){
-
-    const a=j*Math.PI/4;
-
-    el("line",{
-
-      x1:(r+3)*Math.sin(a),
-
-      y1:-(r+3)*Math.cos(a),
-
-      x2:(r+10)*Math.sin(a),
-
-      y2:-(r+10)*Math.cos(a),
-
-      stroke:"#ffd56c",
-
-      "stroke-width":2.5,
-
-      "stroke-linecap":"round"
-
-    },parent);
-
-  }
-
-  el("circle",{
-
-    r:r,
-
-    fill:"url(#sunGlow)"
-
-  },parent);
-
-}
-
-// 昼の外周太陽マーク
-
-function drawSunStage(parent,stage){
-
-  // 昼5/9は従来の太陽
-
-  if(stage===5){
-
-    sun(parent,9);
-
-    return;
-
-  }
-
-  const distance=Math.abs(stage-5);
-
-  const radius=9-distance;
-
-  const sunY=distance*2.8;
-
-  const group=el("g",{
-
-    transform:"translate(0 "+sunY+")"
-
-  },parent);
-
-  const rays=(stage===1||stage===9)?4:8;
-
-  const rayLength=(stage===2||stage===8)?5:8;
-
-  for(let j=0;j<rays;j++){
-
-    const a=j/rays*Math.PI*2;
-
-    el("line",{
-
-      x1:(radius+3)*Math.sin(a),
-
-      y1:-(radius+3)*Math.cos(a),
-
-      x2:(radius+rayLength)*Math.sin(a),
-
-      y2:-(radius+rayLength)*Math.cos(a),
-
-      stroke:(stage<=3||stage>=7)
-
-        ?"#ffab60":"#ffda76",
-
-      "stroke-width":2,
-
-      "stroke-linecap":"round"
-
-    },group);
-
-  }
-
-  el("circle",{
-
-    r:radius,
-
-    fill:(stage<=3||stage>=7)
-
-      ?"#ffad62":"#ffe18b"
-
-  },group);
-
-  // 日の出・日没の地平線
-
-  if(stage===1||stage===2||stage===8||stage===9){
-
-    const horizonY=(stage===1||stage===9)?0:6;
-
-    el("rect",{
-
-      x:-23,y:horizonY,
-
-      width:46,height:24,
-
-      fill:"#172755"
-
-    },group);
-
-    el("line",{
-
-      x1:-20,y1:horizonY,
-
-      x2:20,y2:horizonY,
-
-      stroke:"#ffb978",
-
-      "stroke-width":1.5
-
-    },group);
-
-  }
-
-}
-
-// クロノス18マス
-
-for(let k=0;k<18;k++){
-
-  const a=(-80+k*20)*Math.PI/180;
-
-  const x=180+145*Math.sin(a);
-
-  const y=180-145*Math.cos(a);
-
-  const g=el("g",{
-
-    transform:"translate("+x+" "+y+")",
-
-    id:"mark"+k
-
-  });
-
-  el("circle",{
-
-    r:24,
-
-    fill:"transparent",
-
-    stroke:"transparent",
-
-    id:"halo"+k
-
-  },g);
-
-  if(k<9){
-
-    // 夜：月の満ち欠け
-
-    moonPhase(g,k,13);
-
-  }else{
-
-    // 昼：太陽の昇降
-
-    drawSunStage(g,k-8);
-
-  }
-
-  // タップ領域
-
-  el("circle",{
-
-    r:23,
-
-    fill:"transparent",
-
-    style:"pointer-events:all"
-
-  },g);
-
-  g.addEventListener("click",function(){
-
-    pos=k;
-
-    render();
-
-  });
-
-}
-
-// 中央の円
-
-el("circle",{
-
-  cx:180,cy:180,r:102,
-
-  fill:"#101e46",
-
-  stroke:"#91a4cf",
-
-  "stroke-width":1.5
-
-});
-
-const scene=el("g",{id:"scene"});
-
-const label=el("text",{
-
-  x:180,y:229,
-
-  "text-anchor":"middle",
-
-  fill:"#f0e6d1",
-
-  "font-size":18
-
-});
-
-const count=el("text",{
-
-  x:180,y:257,
-
-  "text-anchor":"middle",
-
-  fill:"#ffffff",
-
-  "font-size":23
-
-});
-
-function clearScene(){
-
-  while(scene.firstChild){
-
-    scene.removeChild(scene.firstChild);
-
-  }
-
-}
-
-// 夜の中央表示
-
-function drawNight(index){
-
-  el("circle",{
-
-    cx:180,cy:180,r:95,
-
-    fill:"#101e46"
-
-  },scene);
-
-  const stars=[
-
-    [119,137],[145,110],[211,111],
-
-    [244,143],[123,187],[237,188],
-
-    [162,126],[198,153]
-
-  ];
-
-  stars.forEach(function(p){
-
-    el("circle",{
-
-      cx:p[0],cy:p[1],r:1.3,
-
-      fill:"#e8efff",
-
-      opacity:".8"
-
-    },scene);
-
-  });
-
-  const mg=el("g",{
-
-    transform:"translate(180 166)"
-
-  },scene);
-
-  moonPhase(mg,index,39);
-
-}
-
-// 雲
-
-function cloud(x,y,opacity){
-
-  el("path",{
-
-    d:
-
-      "M "+(x-24)+" "+y+
-
-      " Q "+(x-14)+" "+(y-12)+
-
-      " "+x+" "+(y-5)+
-
-      " Q "+(x+12)+" "+(y-17)+
-
-      " "+(x+24)+" "+y,
-
-    fill:"none",
-
-    stroke:"#ffffff",
-
-    "stroke-width":5,
-
-    "stroke-linecap":"round",
-
-    opacity:opacity
-
-  },scene);
-
-}
-
-// 昼の中央表示
-
-function drawDay(index){
-
-  const n=index+1;
-
-  // 昼5/9は従来のUIを維持
-
-  if(n===5){
-
-    el("circle",{
-
-      cx:180,cy:180,r:95,
-
-      fill:"#448fca"
-
-    },scene);
-
-    el("path",{
-
-      d:"M 100 202 Q 145 190 180 201 "+
-
-        "Q 219 191 260 203 "+
-
-        "L 260 219 L 100 219 Z",
-
-      fill:"#26476d"
-
-    },scene);
-
-    const sg=el("g",{
-
-      transform:"translate(180 130)"
-
-    },scene);
-
-    sun(sg,17);
-
-    el("path",{
-
-      d:"M 111 177 Q 123 163 139 176 "+
-
-        "Q 153 169 162 181",
-
-      fill:"none",
-
-      stroke:"#d9e7f4",
-
-      "stroke-width":5,
-
-      "stroke-linecap":"round",
-
-      opacity:".6"
-
-    },scene);
-
-    return;
-
-  }
-
-  // その他の昼は空の色が変化
-
-  el("circle",{
-
-    cx:180,cy:180,r:95,
-
-    fill:"url(#day"+n+")"
-
-  },scene);
-
-  // 地平線
-
-  el("path",{
-
-    d:"M 100 207 Q 138 195 180 206 "+
-
-      "Q 220 196 260 207 "+
-
-      "L 260 226 L 100 226 Z",
-
-    fill:n<=2||n>=8?"#1c2947":"#315a77"
-
-  },scene);
-
-  // 太陽の位置
-
-  const xs=[115,131,146,163,180,197,214,229,245];
-
-  const ys=[220,203,179,151,130,151,179,203,220];
-
-  const x=xs[index];
-
-  const y=ys[index];
-
-  const radius=(n===1||n===9)?11:16;
-
-  const sg=el("g",{
-
-    transform:"translate("+x+" "+y+")"
-
-  },scene);
-
-  sun(sg,radius);
-
-  // 朝夕の光
-
-  if(n<=3||n>=7){
-
-    el("ellipse",{
-
-      cx:180,cy:204,
-
-      rx:70,ry:12,
-
-      fill:"#ffbb74",
-
-      opacity:n===2||n===8?".3":".15"
-
-    },scene);
-
-  }
-
-  // 雲
-
-  if(n===2||n===3||n===4){
-
-    cloud(147,171,.5);
-
-    cloud(219,187,.35);
-
-  }
-
-  if(n===6||n===7||n===8){
-
-    cloud(136,178,.45);
-
-    cloud(221,168,.3);
-
-  }
-
-  // 薄暗い空の星
-
-  if(n===1||n===9){
-
-    [[140,117],[211,131],[231,159]].forEach(function(p){
-
-      el("circle",{
-
-        cx:p[0],cy:p[1],r:1.3,
-
-        fill:"#fff5d6",
-
-        opacity:".7"
-
-      },scene);
+      }, g);
 
     });
 
   }
 
-}
+  gradient("day1", [
 
-// 表示更新
+    "#07132d", "#283b65", "#e07b55"
 
-function render(){
+  ]);
 
-  hp.forEach(function(v,i){
+  gradient("day2", [
 
-    document.getElementById("hp"+i).textContent=v;
+    "#263d73", "#d66b66", "#ffc16b"
+
+  ]);
+
+  gradient("day3", [
+
+    "#468cc3", "#8fc7dc", "#ffe0a1"
+
+  ]);
+
+  gradient("day4", [
+
+    "#2b8bd0", "#80c7eb", "#d5eefa"
+
+  ]);
+
+  gradient("day6", [
+
+    "#398bc9", "#7dbbdf", "#d7e9f4"
+
+  ]);
+
+  gradient("day7", [
+
+    "#456ca1", "#eaa064", "#f8c06e"
+
+  ]);
+
+  gradient("day8", [
+
+    "#493b70", "#cc5a65", "#ff9b52"
+
+  ]);
+
+  gradient("day9", [
+
+    "#101e43", "#42385d", "#ad5265"
+
+  ]);
+
+  const moonGradient = el("radialGradient", {
+
+    id: "moonGlow"
+
+  }, defs);
+
+  el("stop", {
+
+    offset: "0%",
+
+    "stop-color": "#fff6c8"
+
+  }, moonGradient);
+
+  el("stop", {
+
+    offset: "70%",
+
+    "stop-color": "#f2d99a"
+
+  }, moonGradient);
+
+  el("stop", {
+
+    offset: "100%",
+
+    "stop-color": "#d7b66f"
+
+  }, moonGradient);
+
+  const sunGradient = el("radialGradient", {
+
+    id: "sunGlow"
+
+  }, defs);
+
+  el("stop", {
+
+    offset: "0%",
+
+    "stop-color": "#fff7bf"
+
+  }, sunGradient);
+
+  el("stop", {
+
+    offset: "65%",
+
+    "stop-color": "#ffda69"
+
+  }, sunGradient);
+
+  el("stop", {
+
+    offset: "100%",
+
+    "stop-color": "#ff9c36"
+
+  }, sunGradient);
+
+  // クロノスの外周
+
+  el("circle", {
+
+    cx: 180,
+
+    cy: 180,
+
+    r: 176,
+
+    fill: "#172755",
+
+    stroke: "#9badd7",
+
+    "stroke-width": 1.5
 
   });
 
-  clearScene();
+  // 昼夜の境界線
 
-  if(pos<9){
+  el("line", {
 
-    drawNight(pos);
+    x1: 7,
 
-    label.textContent="夜";
+    y1: 180,
 
-    count.textContent=pos===4
+    x2: 353,
 
-      ?"真夜中"
+    y2: 180,
 
-      :(pos+1)+" / 9";
+    stroke: "#7286ba",
 
-  }else{
-
-    const dayIndex=pos-9;
-
-    drawDay(dayIndex);
-
-    label.textContent="昼";
-
-    // 昼5/9だけ「正午」と表示
-
-    count.textContent=dayIndex===4
-
-      ?"正午"
-
-      :(dayIndex+1)+" / 9";
-
-  }
-
-  // 現在位置の発光
-
-  for(let k=0;k<18;k++){
-
-    const active=k===pos;
-
-    const halo=document.getElementById("halo"+k);
-
-    halo.setAttribute(
-
-      "fill",active?"#f5d98a":"transparent"
-
-    );
-
-    halo.setAttribute(
-
-      "fill-opacity",active?".3":"0"
-
-    );
-
-    halo.setAttribute(
-
-      "stroke",active?"#ffe6a0":"transparent"
-
-    );
-
-    halo.setAttribute(
-
-      "stroke-width",active?"2":"0"
-
-    );
-
-    document.getElementById("mark"+k)
-
-      .setAttribute("class",active?"active":"");
-
-  }
-
-  saveState();
-
-}
-
-// HP操作
-
-document.querySelectorAll("[data-hp]").forEach(function(button){
-
-  button.addEventListener("click",function(){
-
-    const i=Number(button.getAttribute("data-hp"));
-
-    const d=Number(button.getAttribute("data-delta"));
-
-    hp[i]=Math.max(0,Math.min(100,hp[i]+d));
-
-    render();
+    "stroke-opacity": ".45"
 
   });
 
-});
+  // 月の満ち欠け
 
-// 1マス戻る
+  function moonPhase(parent, index, radius) {
 
-document.getElementById("back").addEventListener("click",function(){
+    const illuminated =
 
-  pos=(pos+17)%18;
+      (1 - Math.cos(2 * Math.PI * index / 8)) / 2;
+
+    el("circle", {
+
+      r: radius,
+
+      fill: "#0c1734",
+
+      stroke: "#b3c1d9",
+
+      "stroke-opacity": ".45",
+
+      "stroke-width": ".7"
+
+    }, parent);
+
+    if (illuminated < .01) {
+
+      return;
+
+    }
+
+    if (illuminated > .99) {
+
+      el("circle", {
+
+        r: radius,
+
+        fill: "url(#moonGlow)"
+
+      }, parent);
+
+      return;
+
+    }
+
+    const waxing = index < 4;
+
+    const rx = Math.abs(1 - 2 * illuminated) * radius;
+
+    const sweepOuter = waxing ? 1 : 0;
+
+    const sweepInner = illuminated < .5
+
+      ? (waxing ? 0 : 1)
+
+      : (waxing ? 1 : 0);
+
+    const d =
+
+      "M 0 " + (-radius) +
+
+      " A " + radius + " " + radius +
+
+      " 0 0 " + sweepOuter +
+
+      " 0 " + radius +
+
+      " A " + rx + " " + radius +
+
+      " 0 0 " + sweepInner +
+
+      " 0 " + (-radius) + " Z";
+
+    el("path", {
+
+      d: d,
+
+      fill: "url(#moonGlow)"
+
+    }, parent);
+
+  }
+
+  // 太陽
+
+  function sun(parent, radius) {
+
+    for (let j = 0; j < 8; j++) {
+
+      const angle = j * Math.PI / 4;
+
+      el("line", {
+
+        x1: (radius + 3) * Math.sin(angle),
+
+        y1: -(radius + 3) * Math.cos(angle),
+
+        x2: (radius + 10) * Math.sin(angle),
+
+        y2: -(radius + 10) * Math.cos(angle),
+
+        stroke: "#ffd56c",
+
+        "stroke-width": 2.5,
+
+        "stroke-linecap": "round"
+
+      }, parent);
+
+    }
+
+    el("circle", {
+
+      r: radius,
+
+      fill: "url(#sunGlow)"
+
+    }, parent);
+
+  }
+
+  // 昼の1〜9マスの太陽
+
+  function drawSunStage(parent, stage) {
+
+    // 昼5/9の太陽は維持
+
+    if (stage === 5) {
+
+      sun(parent, 9);
+
+      return;
+
+    }
+
+    const distance = Math.abs(stage - 5);
+
+    const radius = 9 - distance;
+
+    const sunY = distance * 2.8;
+
+    const group = el("g", {
+
+      transform: "translate(0 " + sunY + ")"
+
+    }, parent);
+
+    const rays =
+
+      (stage === 1 || stage === 9) ? 4 : 8;
+
+    const rayLength =
+
+      (stage === 2 || stage === 8) ? 5 : 8;
+
+    for (let j = 0; j < rays; j++) {
+
+      const angle = j / rays * Math.PI * 2;
+
+      el("line", {
+
+        x1: (radius + 3) * Math.sin(angle),
+
+        y1: -(radius + 3) * Math.cos(angle),
+
+        x2: (radius + rayLength) * Math.sin(angle),
+
+        y2: -(radius + rayLength) * Math.cos(angle),
+
+        stroke:
+
+          (stage <= 3 || stage >= 7)
+
+            ? "#ffab60"
+
+            : "#ffda76",
+
+        "stroke-width": 2,
+
+        "stroke-linecap": "round"
+
+      }, group);
+
+    }
+
+    el("circle", {
+
+      r: radius,
+
+      fill:
+
+        (stage <= 3 || stage >= 7)
+
+          ? "#ffad62"
+
+          : "#ffe18b"
+
+    }, group);
+
+    // 日の出・日没の地平線
+
+    if (
+
+      stage === 1 ||
+
+      stage === 2 ||
+
+      stage === 8 ||
+
+      stage === 9
+
+    ) {
+
+      const horizonY =
+
+        (stage === 1 || stage === 9) ? 0 : 6;
+
+      el("rect", {
+
+        x: -23,
+
+        y: horizonY,
+
+        width: 46,
+
+        height: 24,
+
+        fill: "#172755"
+
+      }, group);
+
+      el("line", {
+
+        x1: -20,
+
+        y1: horizonY,
+
+        x2: 20,
+
+        y2: horizonY,
+
+        stroke: "#ffb978",
+
+        "stroke-width": 1.5
+
+      }, group);
+
+    }
+
+  }
+
+  // クロノス18マス
+
+  for (let k = 0; k < 18; k++) {
+
+    const angle = (-80 + k * 20) * Math.PI / 180;
+
+    const x = 180 + 145 * Math.sin(angle);
+
+    const y = 180 - 145 * Math.cos(angle);
+
+    const group = el("g", {
+
+      transform:
+
+        "translate(" + x + " " + y + ")",
+
+      id: "mark" + k
+
+    });
+
+    el("circle", {
+
+      r: 24,
+
+      fill: "transparent",
+
+      stroke: "transparent",
+
+      id: "halo" + k
+
+    }, group);
+
+    if (k < 9) {
+
+      moonPhase(group, k, 13);
+
+    } else {
+
+      drawSunStage(group, k - 8);
+
+    }
+
+    el("circle", {
+
+      r: 23,
+
+      fill: "transparent",
+
+      style: "pointer-events:all"
+
+    }, group);
+
+    group.addEventListener("click", function () {
+
+      pos = k;
+
+      render();
+
+    });
+
+  }
+
+  // 中央の円
+
+  el("circle", {
+
+    cx: 180,
+
+    cy: 180,
+
+    r: 102,
+
+    fill: "#101e46",
+
+    stroke: "#91a4cf",
+
+    "stroke-width": 1.5
+
+  });
+
+  const scene = el("g", {
+
+    id: "scene"
+
+  });
+
+  const label = el("text", {
+
+    x: 180,
+
+    y: 229,
+
+    "text-anchor": "middle",
+
+    fill: "#f0e6d1",
+
+    "font-size": 18
+
+  });
+
+  const count = el("text", {
+
+    x: 180,
+
+    y: 257,
+
+    "text-anchor": "middle",
+
+    fill: "#ffffff",
+
+    "font-size": 23
+
+  });
+
+  function clearScene() {
+
+    while (scene.firstChild) {
+
+      scene.removeChild(scene.firstChild);
+
+    }
+
+  }
+
+  // 夜の中央表示
+
+  function drawNight(index) {
+
+    el("circle", {
+
+      cx: 180,
+
+      cy: 180,
+
+      r: 95,
+
+      fill: "#101e46"
+
+    }, scene);
+
+    const stars = [
+
+      [119, 137],
+
+      [145, 110],
+
+      [211, 111],
+
+      [244, 143],
+
+      [123, 187],
+
+      [237, 188],
+
+      [162, 126],
+
+      [198, 153]
+
+    ];
+
+    stars.forEach(function (p) {
+
+      el("circle", {
+
+        cx: p[0],
+
+        cy: p[1],
+
+        r: 1.3,
+
+        fill: "#e8efff",
+
+        opacity: ".8"
+
+      }, scene);
+
+    });
+
+    const moonGroup = el("g", {
+
+      transform: "translate(180 166)"
+
+    }, scene);
+
+    moonPhase(moonGroup, index, 39);
+
+  }
+
+  // 雲
+
+  function cloud(x, y, opacity) {
+
+    el("path", {
+
+      d:
+
+        "M " + (x - 24) + " " + y +
+
+        " Q " + (x - 14) + " " + (y - 12) +
+
+        " " + x + " " + (y - 5) +
+
+        " Q " + (x + 12) + " " + (y - 17) +
+
+        " " + (x + 24) + " " + y,
+
+      fill: "none",
+
+      stroke: "#ffffff",
+
+      "stroke-width": 5,
+
+      "stroke-linecap": "round",
+
+      opacity: opacity
+
+    }, scene);
+
+  }
+
+  // 昼の中央表示
+
+  function drawDay(index) {
+
+    const stage = index + 1;
+
+    // 昼5/9：従来の正午UIを維持
+
+    if (stage === 5) {
+
+      el("circle", {
+
+        cx: 180,
+
+        cy: 180,
+
+        r: 95,
+
+        fill: "#448fca"
+
+      }, scene);
+
+      el("path", {
+
+        d:
+
+          "M 100 202 Q 145 190 180 201 " +
+
+          "Q 219 191 260 203 " +
+
+          "L 260 219 L 100 219 Z",
+
+        fill: "#26476d"
+
+      }, scene);
+
+      const sunGroup = el("g", {
+
+        transform: "translate(180 130)"
+
+      }, scene);
+
+      sun(sunGroup, 17);
+
+      el("path", {
+
+        d:
+
+          "M 111 177 Q 123 163 139 176 " +
+
+          "Q 153 169 162 181",
+
+        fill: "none",
+
+        stroke: "#d9e7f4",
+
+        "stroke-width": 5,
+
+        "stroke-linecap": "round",
+
+        opacity: ".6"
+
+      }, scene);
+
+      return;
+
+    }
+
+    // その他の昼は空の色が変化
+
+    el("circle", {
+
+      cx: 180,
+
+      cy: 180,
+
+      r: 95,
+
+      fill: "url(#day" + stage + ")"
+
+    }, scene);
+
+    // 地平線
+
+    el("path", {
+
+      d:
+
+        "M 100 207 Q 138 195 180 206 " +
+
+        "Q 220 196 260 207 " +
+
+        "L 260 226 L 100 226 Z",
+
+      fill:
+
+        stage <= 2 || stage >= 8
+
+          ? "#1c2947"
+
+          : "#315a77"
+
+    }, scene);
+
+    // 朝から夕方まで太陽が移動
+
+    const xs = [
+
+      115, 131, 146, 163, 180,
+
+      197, 214, 229, 245
+
+    ];
+
+    const ys = [
+
+      220, 203, 179, 151, 130,
+
+      151, 179, 203, 220
+
+    ];
+
+    const x = xs[index];
+
+    const y = ys[index];
+
+    const radius =
+
+      (stage === 1 || stage === 9) ? 11 : 16;
+
+    const sunGroup = el("g", {
+
+      transform:
+
+        "translate(" + x + " " + y + ")"
+
+    }, scene);
+
+    sun(sunGroup, radius);
+
+    // 朝夕の光
+
+    if (stage <= 3 || stage >= 7) {
+
+      el("ellipse", {
+
+        cx: 180,
+
+        cy: 204,
+
+        rx: 70,
+
+        ry: 12,
+
+        fill: "#ffbb74",
+
+        opacity:
+
+          stage === 2 || stage === 8
+
+            ? ".3"
+
+            : ".15"
+
+      }, scene);
+
+    }
+
+    // 雲
+
+    if (
+
+      stage === 2 ||
+
+      stage === 3 ||
+
+      stage === 4
+
+    ) {
+
+      cloud(147, 171, .5);
+
+      cloud(219, 187, .35);
+
+    }
+
+    if (
+
+      stage === 6 ||
+
+      stage === 7 ||
+
+      stage === 8
+
+    ) {
+
+      cloud(136, 178, .45);
+
+      cloud(221, 168, .3);
+
+    }
+
+    // 夜明け・日没の星
+
+    if (stage === 1 || stage === 9) {
+
+      [
+
+        [140, 117],
+
+        [211, 131],
+
+        [231, 159]
+
+      ].forEach(function (p) {
+
+        el("circle", {
+
+          cx: p[0],
+
+          cy: p[1],
+
+          r: 1.3,
+
+          fill: "#fff5d6",
+
+          opacity: ".7"
+
+        }, scene);
+
+      });
+
+    }
+
+  }
+
+  // 表示更新
+
+  function render() {
+
+    hp.forEach(function (value, index) {
+
+      document.getElementById(
+
+        "hp" + index
+
+      ).textContent = value;
+
+    });
+
+    clearScene();
+
+    if (pos < 9) {
+
+      drawNight(pos);
+
+      label.textContent = "夜";
+
+      count.textContent =
+
+        pos === 4
+
+          ? "真夜中"
+
+          : (pos + 1) + " / 9";
+
+    } else {
+
+      const dayIndex = pos - 9;
+
+      drawDay(dayIndex);
+
+      label.textContent = "昼";
+
+      count.textContent =
+
+        dayIndex === 4
+
+          ? "正午"
+
+          : (dayIndex + 1) + " / 9";
+
+    }
+
+    // 現在位置を発光
+
+    for (let k = 0; k < 18; k++) {
+
+      const active = k === pos;
+
+      const halo = document.getElementById(
+
+        "halo" + k
+
+      );
+
+      halo.setAttribute(
+
+        "fill",
+
+        active ? "#f5d98a" : "transparent"
+
+      );
+
+      halo.setAttribute(
+
+        "fill-opacity",
+
+        active ? ".3" : "0"
+
+      );
+
+      halo.setAttribute(
+
+        "stroke",
+
+        active ? "#ffe6a0" : "transparent"
+
+      );
+
+      halo.setAttribute(
+
+        "stroke-width",
+
+        active ? "2" : "0"
+
+      );
+
+      document.getElementById(
+
+        "mark" + k
+
+      ).setAttribute(
+
+        "class",
+
+        active ? "active" : ""
+
+      );
+
+    }
+
+    saveState();
+
+  }
+
+  // HP増減
+
+  document.querySelectorAll(
+
+    "[data-hp]"
+
+  ).forEach(function (button) {
+
+    button.addEventListener(
+
+      "click",
+
+      function () {
+
+        const index = Number(
+
+          button.getAttribute("data-hp")
+
+        );
+
+        const delta = Number(
+
+          button.getAttribute("data-delta")
+
+        );
+
+        hp[index] = Math.max(
+
+          0,
+
+          Math.min(
+
+            100,
+
+            hp[index] + delta
+
+          )
+
+        );
+
+        render();
+
+      }
+
+    );
+
+  });
+
+  // 左へ1マス
+
+  document.getElementById(
+
+    "back"
+
+  ).addEventListener(
+
+    "click",
+
+    function () {
+
+      pos = (pos + 17) % 18;
+
+      render();
+
+    }
+
+  );
+
+  // 右へ1マス
+
+  document.getElementById(
+
+    "forward"
+
+  ).addEventListener(
+
+    "click",
+
+    function () {
+
+      pos = (pos + 1) % 18;
+
+      render();
+
+    }
+
+  );
+
+  // リセット
+
+  document.getElementById(
+
+    "reset"
+
+  ).addEventListener(
+
+    "click",
+
+    function () {
+
+      hp = [100, 100];
+
+      pos = 4;
+
+      render();
+
+    }
+
+  );
 
   render();
-
-});
-
-// 1マス進む
-
-document.getElementById("forward").addEventListener("click",function(){
-
-  pos=(pos+1)%18;
-
-  render();
-
-});
-
-// すべてリセット
-
-document.getElementById("reset").addEventListener("click",function(){
-
-  hp=[100,100];
-
-  pos=4;
-
-  render();
-
-});
-
-render();
 
 })();
 
