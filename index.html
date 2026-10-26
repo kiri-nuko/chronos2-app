@@ -8,7 +8,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
 <meta name="theme-color" content="#111d49">
 
@@ -68,9 +68,15 @@ body {
 
   color: white;
 
-  font-family: -apple-system, BlinkMacSystemFont,
+  font-family:
 
-    "Hiragino Kaku Gothic ProN", sans-serif;
+    -apple-system,
+
+    BlinkMacSystemFont,
+
+    "Hiragino Kaku Gothic ProN",
+
+    sans-serif;
 
   -webkit-text-size-adjust: 100%;
 
@@ -110,7 +116,15 @@ button:active {
 
   overflow: hidden;
 
-  background: linear-gradient(180deg, #111d49, #202f69);
+  background: linear-gradient(
+
+    180deg,
+
+    #111d49,
+
+    #202f69
+
+  );
 
 }
 
@@ -135,6 +149,8 @@ button:active {
   gap: var(--gap);
 
 }
+
+/* タイトル */
 
 h1 {
 
@@ -220,6 +236,8 @@ h1 {
 
   min-width: 0;
 
+  width: 100%;
+
   height: var(--hp-button-height);
 
   padding: 0 2px;
@@ -282,33 +300,37 @@ h1 {
 
 }
 
-/* リセット・移動ボタン */
+/* 操作エリア */
 
 .controls {
 
+  position: relative;
+
   width: 100%;
 
-  display: grid;
+  height: var(--reset-size);
 
-  grid-template-columns:
-
-    var(--reset-size)
-
-    minmax(0, 1fr)
-
-    minmax(0, 1fr);
+  display: flex;
 
   align-items: center;
 
-  gap: 10px;
+  justify-content: center;
 
   flex-shrink: 0;
 
 }
 
-/* 独立した円形リセットボタン */
+/* 円形リセット */
 
 #reset {
+
+  position: absolute;
+
+  left: 0;
+
+  top: 50%;
+
+  transform: translateY(-50%);
 
   width: var(--reset-size);
 
@@ -328,8 +350,6 @@ h1 {
 
   justify-content: center;
 
-  text-align: center;
-
   flex-direction: column;
 
   gap: 1px;
@@ -341,6 +361,22 @@ h1 {
   font-weight: 600;
 
   white-space: nowrap;
+
+}
+
+/* 戻る・進むを中央に配置 */
+
+.move-buttons {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  width: 66%;
+
+  margin: 0 auto;
 
 }
 
@@ -386,12 +422,6 @@ svg text {
 
   }
 
-  .controls {
-
-    gap: 6px;
-
-  }
-
   .hp-buttons {
 
     gap: 3px;
@@ -401,6 +431,12 @@ svg text {
   .hp-buttons button {
 
     font-size: 14px;
+
+  }
+
+  .move-buttons {
+
+    gap: 6px;
 
   }
 
@@ -424,11 +460,15 @@ svg text {
 
   <h1>クロノス管理</h1>
 
-  <!-- プレイヤー1：180度回転 -->
+  <!-- プレイヤー1 -->
 
   <section class="player one">
 
-    <div class="player-name">プレイヤー1</div>
+    <div class="player-name">
+
+      プレイヤー1
+
+    </div>
 
     <div class="hp" id="hp1">100</div>
 
@@ -446,11 +486,15 @@ svg text {
 
   </section>
 
-  <!-- クロノス -->
+  <!-- クロノス盤 -->
 
   <section class="clock-area">
 
-    <div class="clock-label">現在のクロノス</div>
+    <div class="clock-label">
+
+      現在のクロノス
+
+    </div>
 
     <svg
 
@@ -466,11 +510,17 @@ svg text {
 
   </section>
 
-  <!-- リセット・戻る・進む -->
+  <!-- 操作ボタン -->
 
   <section class="controls">
 
-    <button type="button" id="reset" aria-label="すべてリセット">
+    <button
+
+      type="button"
+
+      id="reset"
+
+      aria-label="すべてリセット">
 
       <span>すべて</span>
 
@@ -478,17 +528,33 @@ svg text {
 
     </button>
 
-    <button type="button" class="move-button" id="back">
+    <div class="move-buttons">
 
-      ◀ 戻る
+      <button
 
-    </button>
+        type="button"
 
-    <button type="button" class="move-button" id="forward">
+        class="move-button"
 
-      進む ▶
+        id="back">
 
-    </button>
+        ◀ 戻る
+
+      </button>
+
+      <button
+
+        type="button"
+
+        class="move-button"
+
+        id="forward">
+
+        進む ▶
+
+      </button>
+
+    </div>
 
   </section>
 
@@ -496,7 +562,11 @@ svg text {
 
   <section class="player">
 
-    <div class="player-name">プレイヤー2</div>
+    <div class="player-name">
+
+      プレイヤー2
+
+    </div>
 
     <div class="hp" id="hp2">100</div>
 
@@ -545,6 +615,8 @@ const COLORS = {
   night: "#0b1534"
 
 };
+
+/* SVG作成 */
 
 function createSVG(tag, attrs = {}, parent = svg) {
 
@@ -624,7 +696,7 @@ createSVG("stop", {
 
 }, sunGradient);
 
-/* クロノス盤 */
+/* 時計の外枠 */
 
 createSVG("circle", {
 
@@ -722,7 +794,11 @@ function drawMoon(group, index) {
 
   }, group);
 
-  if (index === 8) return;
+  if (index === 8) {
+
+    return;
+
+  }
 
   if (index === 4) {
 
@@ -864,7 +940,11 @@ function drawSun(group, dayIndex) {
 
     const y2 = Math.sin(angle) * outer;
 
-    if (distanceFromNoon >= 3 && y2 > 0) continue;
+    if (distanceFromNoon >= 3 && y2 > 0) {
+
+      continue;
+
+    }
 
     createSVG("line", {
 
@@ -1038,7 +1118,11 @@ function render() {
 
   if (number === 5) {
 
-    phaseNumber.textContent = isNight ? "真夜中" : "正午";
+    phaseNumber.textContent = isNight
+
+      ? "真夜中"
+
+      : "正午";
 
   } else {
 
@@ -1074,7 +1158,7 @@ document.querySelectorAll("[data-player]").forEach(button => {
 
 });
 
-/* クロノス移動 */
+/* 戻る */
 
 document.getElementById("back").addEventListener("click", () => {
 
@@ -1084,6 +1168,8 @@ document.getElementById("back").addEventListener("click", () => {
 
 });
 
+/* 進む */
+
 document.getElementById("forward").addEventListener("click", () => {
 
   position = (position + 1) % 18;
@@ -1092,7 +1178,7 @@ document.getElementById("forward").addEventListener("click", () => {
 
 });
 
-/* リセット */
+/* すべてリセット */
 
 document.getElementById("reset").addEventListener("click", () => {
 
