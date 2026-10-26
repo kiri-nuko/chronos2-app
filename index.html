@@ -8,7 +8,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 
 <meta name="theme-color" content="#111d49">
 
@@ -48,9 +48,13 @@
 
   --reset-size: 54px;
 
+  --flip-size: 44px;
+
 }
 
-html, body {
+html,
+
+body {
 
   margin: 0;
 
@@ -256,6 +260,74 @@ h1 {
 
 }
 
+/* プレイヤー1と反転ボタンの配置 */
+
+.player-one-area {
+
+  position: relative;
+
+  width: 100%;
+
+  flex-shrink: 0;
+
+}
+
+.player-one-area .player {
+
+  width: 100%;
+
+}
+
+/*
+
+  プレイヤー1の左下に配置。
+
+  HPパネルと重ならないよう、
+
+  パネルの下側に専用スペースを確保。
+
+*/
+
+.flip-row {
+
+  display: flex;
+
+  justify-content: flex-start;
+
+  width: 100%;
+
+  margin-top: 4px;
+
+}
+
+#flip {
+
+  width: var(--flip-size);
+
+  height: var(--flip-size);
+
+  padding: 0;
+
+  border: 1px solid #a3b2db;
+
+  border-radius: 50%;
+
+  background: #4b62a4;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
 /* クロノス盤 */
 
 .clock-area {
@@ -297,6 +369,18 @@ h1 {
   overflow: visible;
 
   touch-action: manipulation;
+
+  transform: rotate(0deg);
+
+  transform-origin: center center;
+
+  transition: transform 0.55s ease-in-out;
+
+}
+
+#clock.flipped {
+
+  transform: rotate(180deg);
 
 }
 
@@ -364,7 +448,7 @@ h1 {
 
 }
 
-/* 戻る・進むを中央に配置 */
+/* 戻る・進むは中央 */
 
 .move-buttons {
 
@@ -448,6 +532,16 @@ svg text {
 
 }
 
+@media (prefers-reduced-motion: reduce) {
+
+  #clock {
+
+    transition: none;
+
+  }
+
+}
+
 </style>
 
 </head>
@@ -460,31 +554,57 @@ svg text {
 
   <h1>クロノス管理</h1>
 
-  <!-- プレイヤー1 -->
+  <!-- プレイヤー1と反転ボタン -->
 
-  <section class="player one">
+  <div class="player-one-area">
 
-    <div class="player-name">
+    <section class="player one">
 
-      プレイヤー1
+      <div class="player-name">
+
+        プレイヤー1
+
+      </div>
+
+      <div class="hp" id="hp1">
+
+        100
+
+      </div>
+
+      <div class="hp-buttons">
+
+        <button type="button" data-player="0" data-delta="-20">−20</button>
+
+        <button type="button" data-player="0" data-delta="-10">−10</button>
+
+        <button type="button" data-player="0" data-delta="10">＋10</button>
+
+        <button type="button" data-player="0" data-delta="20">＋20</button>
+
+      </div>
+
+    </section>
+
+    <div class="flip-row">
+
+      <button
+
+        type="button"
+
+        id="flip"
+
+        aria-label="クロノス盤を反転"
+
+        aria-pressed="false">
+
+        反転
+
+      </button>
 
     </div>
 
-    <div class="hp" id="hp1">100</div>
-
-    <div class="hp-buttons">
-
-      <button type="button" data-player="0" data-delta="-20">−20</button>
-
-      <button type="button" data-player="0" data-delta="-10">−10</button>
-
-      <button type="button" data-player="0" data-delta="10">＋10</button>
-
-      <button type="button" data-player="0" data-delta="20">＋20</button>
-
-    </div>
-
-  </section>
+  </div>
 
   <!-- クロノス盤 -->
 
@@ -568,7 +688,11 @@ svg text {
 
     </div>
 
-    <div class="hp" id="hp2">100</div>
+    <div class="hp" id="hp2">
+
+      100
+
+    </div>
 
     <div class="hp-buttons">
 
@@ -592,11 +716,21 @@ svg text {
 
 "use strict";
 
-/* ゲーム状態 */
+/* =========================
+
+   ゲーム状態
+
+========================= */
 
 let hp = [100, 100];
 
+// 夜5/9（真夜中）
+
 let position = 4;
+
+// クロノス盤の反転状態
+
+let isFlipped = false;
 
 const svg = document.getElementById("clock");
 
@@ -616,7 +750,11 @@ const COLORS = {
 
 };
 
-/* SVG作成 */
+/* =========================
+
+   SVG作成
+
+========================= */
 
 function createSVG(tag, attrs = {}, parent = svg) {
 
@@ -634,7 +772,11 @@ function createSVG(tag, attrs = {}, parent = svg) {
 
 }
 
-/* グラデーション */
+/* =========================
+
+   グラデーション
+
+========================= */
 
 const defs = createSVG("defs");
 
@@ -696,7 +838,11 @@ createSVG("stop", {
 
 }, sunGradient);
 
-/* 時計の外枠 */
+/* =========================
+
+   クロノス盤の枠
+
+========================= */
 
 createSVG("circle", {
 
@@ -776,7 +922,11 @@ createSVG("circle", {
 
 });
 
-/* 月の満ち欠け */
+/* =========================
+
+   月の満ち欠け
+
+========================= */
 
 function drawMoon(group, index) {
 
@@ -794,11 +944,15 @@ function drawMoon(group, index) {
 
   }, group);
 
+  // 新月
+
   if (index === 8) {
 
     return;
 
   }
+
+  // 満月
 
   if (index === 4) {
 
@@ -868,7 +1022,11 @@ function drawMoon(group, index) {
 
 }
 
-/* 太陽の変化 */
+/* =========================
+
+   太陽の変化
+
+========================= */
 
 function drawSun(group, dayIndex) {
 
@@ -962,7 +1120,11 @@ function drawSun(group, dayIndex) {
 
 }
 
-/* 18マス配置 */
+/* =========================
+
+   18マス
+
+========================= */
 
 const marks = [];
 
@@ -1024,7 +1186,11 @@ for (let i = 0; i < 18; i++) {
 
 }
 
-/* 中央表示 */
+/* =========================
+
+   中央表示
+
+========================= */
 
 const centerObject = createSVG("g");
 
@@ -1084,7 +1250,11 @@ function drawCenterSymbol() {
 
 }
 
-/* 表示更新 */
+/* =========================
+
+   表示更新
+
+========================= */
 
 function render() {
 
@@ -1134,7 +1304,11 @@ function render() {
 
 }
 
-/* HP操作 */
+/* =========================
+
+   HP操作
+
+========================= */
 
 document.querySelectorAll("[data-player]").forEach(button => {
 
@@ -1158,7 +1332,11 @@ document.querySelectorAll("[data-player]").forEach(button => {
 
 });
 
-/* 戻る */
+/* =========================
+
+   クロノス移動
+
+========================= */
 
 document.getElementById("back").addEventListener("click", () => {
 
@@ -1168,8 +1346,6 @@ document.getElementById("back").addEventListener("click", () => {
 
 });
 
-/* 進む */
-
 document.getElementById("forward").addEventListener("click", () => {
 
   position = (position + 1) % 18;
@@ -1178,7 +1354,11 @@ document.getElementById("forward").addEventListener("click", () => {
 
 });
 
-/* すべてリセット */
+/* =========================
+
+   すべてリセット
+
+========================= */
 
 document.getElementById("reset").addEventListener("click", () => {
 
@@ -1190,7 +1370,35 @@ document.getElementById("reset").addEventListener("click", () => {
 
 });
 
-/* 画面サイズ自動調整 */
+/* =========================
+
+   クロノス盤を180度反転
+
+========================= */
+
+const flipButton = document.getElementById("flip");
+
+flipButton.addEventListener("click", () => {
+
+  isFlipped = !isFlipped;
+
+  svg.classList.toggle("flipped", isFlipped);
+
+  flipButton.setAttribute(
+
+    "aria-pressed",
+
+    String(isFlipped)
+
+  );
+
+});
+
+/* =========================
+
+   画面サイズ自動調整
+
+========================= */
 
 const app = document.getElementById("app");
 
@@ -1229,6 +1437,8 @@ function fitScreen() {
   setVariable("--move-height", "42px");
 
   setVariable("--reset-size", "54px");
+
+  setVariable("--flip-size", "44px");
 
   app.style.width = screenWidth + "px";
 
@@ -1279,6 +1489,8 @@ function fitScreen() {
     setVariable("--move-height", "38px");
 
     setVariable("--reset-size", "48px");
+
+    setVariable("--flip-size", "38px");
 
     const compactHeight = app.scrollHeight;
 
