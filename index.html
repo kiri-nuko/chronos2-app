@@ -48,7 +48,7 @@
 
   --reset-size: 54px;
 
-  --flip-size: 38px;
+  --flip-size: 36px;
 
 }
 
@@ -70,9 +70,15 @@ body {
 
   color: white;
 
-  font-family: -apple-system, BlinkMacSystemFont,
+  font-family:
 
-    "Hiragino Kaku Gothic ProN", sans-serif;
+    -apple-system,
+
+    BlinkMacSystemFont,
+
+    "Hiragino Kaku Gothic ProN",
+
+    sans-serif;
 
   -webkit-text-size-adjust: 100%;
 
@@ -112,7 +118,15 @@ button:active {
 
   overflow: hidden;
 
-  background: linear-gradient(180deg,#111d49,#202f69);
+  background: linear-gradient(
+
+    180deg,
+
+    #111d49,
+
+    #202f69
+
+  );
 
 }
 
@@ -138,6 +152,8 @@ button:active {
 
 }
 
+/* タイトル */
+
 h1 {
 
   margin: 0;
@@ -158,7 +174,7 @@ h1 {
 
 }
 
-/* HP管理 */
+/* HP管理パネル */
 
 .player {
 
@@ -212,7 +228,7 @@ h1 {
 
   display: grid;
 
-  grid-template-columns: repeat(4,minmax(0,1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
   gap: 5px;
 
@@ -242,7 +258,7 @@ h1 {
 
 }
 
-/* プレイヤー1の領域 */
+/* プレイヤー1 */
 
 .player-one-area {
 
@@ -254,37 +270,17 @@ h1 {
 
 }
 
-.player-one-area .player {
-
-  width: 100%;
-
-}
-
-/*
-
-  反転ボタンは絶対配置。
-
-  HPパネルの高さを増やさないため、
-
-  クロノス盤のサイズに影響しない。
-
-*/
+/* HPパネル枠外の左下に反転ボタン */
 
 .flip-row {
 
   position: absolute;
 
-  left: 8px;
+  left: 0;
 
-  bottom: 8px;
+  top: calc(100% + 3px);
 
-  display: flex;
-
-  align-items: center;
-
-  justify-content: flex-start;
-
-  z-index: 5;
+  z-index: 10;
 
 }
 
@@ -302,13 +298,9 @@ h1 {
 
   background: #4b62a4;
 
-  color: white;
-
   font-size: 10px;
 
-  line-height: 1;
-
-  font-weight: 600;
+  font-weight: 650;
 
   display: flex;
 
@@ -374,6 +366,20 @@ h1 {
 
 }
 
+svg text {
+
+  pointer-events: none;
+
+  user-select: none;
+
+}
+
+.clock-mark {
+
+  cursor: pointer;
+
+}
+
 /* 操作ボタン */
 
 .controls {
@@ -393,6 +399,8 @@ h1 {
   flex-shrink: 0;
 
 }
+
+/* すべてリセット */
 
 #reset {
 
@@ -436,11 +444,13 @@ h1 {
 
 }
 
+/* 戻る・進む */
+
 .move-buttons {
 
   display: grid;
 
-  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 
   gap: 10px;
 
@@ -470,21 +480,7 @@ h1 {
 
 }
 
-svg text {
-
-  pointer-events: none;
-
-  user-select: none;
-
-}
-
-.clock-mark {
-
-  cursor: pointer;
-
-}
-
-@media(max-width:360px) {
+@media (max-width: 360px) {
 
   :root {
 
@@ -518,7 +514,7 @@ svg text {
 
 }
 
-@media(prefers-reduced-motion:reduce) {
+@media (prefers-reduced-motion: reduce) {
 
   #clock {
 
@@ -538,131 +534,155 @@ svg text {
 
 <main id="app">
 
-<h1>クロノス管理</h1>
+  <h1>クロノス管理</h1>
 
-<!-- プレイヤー1 -->
+  <!-- プレイヤー1 -->
 
-<div class="player-one-area">
+  <div class="player-one-area">
 
-  <section class="player one">
+    <section class="player one">
 
-    <div class="player-name">プレイヤー1</div>
+      <div class="player-name">
 
-    <div class="hp" id="hp1">100</div>
+        プレイヤー1
 
-    <div class="hp-buttons">
+      </div>
 
-      <button type="button" data-player="0" data-delta="-20">−20</button>
+      <div class="hp" id="hp1">100</div>
 
-      <button type="button" data-player="0" data-delta="-10">−10</button>
+      <div class="hp-buttons">
 
-      <button type="button" data-player="0" data-delta="10">＋10</button>
+        <button type="button" data-player="0" data-delta="-20">−20</button>
 
-      <button type="button" data-player="0" data-delta="20">＋20</button>
+        <button type="button" data-player="0" data-delta="-10">−10</button>
+
+        <button type="button" data-player="0" data-delta="10">＋10</button>
+
+        <button type="button" data-player="0" data-delta="20">＋20</button>
+
+      </div>
+
+    </section>
+
+    <!-- パネルの枠外に配置 -->
+
+    <div class="flip-row">
+
+      <button
+
+        type="button"
+
+        id="flip"
+
+        aria-label="クロノス盤を反転"
+
+        aria-pressed="false">
+
+        反転
+
+      </button>
 
     </div>
 
+  </div>
+
+  <!-- クロノス盤 -->
+
+  <section class="clock-area">
+
+    <div class="clock-label">
+
+      現在のクロノス
+
+    </div>
+
+    <svg
+
+      id="clock"
+
+      viewBox="0 0 360 360"
+
+      xmlns="http://www.w3.org/2000/svg"
+
+      aria-label="クロノス盤">
+
+    </svg>
+
   </section>
 
-  <!-- 左下の反転ボタン -->
+  <!-- 操作ボタン -->
 
-  <div class="flip-row">
+  <section class="controls">
 
     <button
 
       type="button"
 
-      id="flip"
+      id="reset"
 
-      aria-label="クロノス盤を反転"
+      aria-label="すべてリセット">
 
-      aria-pressed="false">
+      <span>すべて</span>
 
-      反転
-
-    </button>
-
-  </div>
-
-</div>
-
-<!-- クロノス盤 -->
-
-<section class="clock-area">
-
-  <div class="clock-label">現在のクロノス</div>
-
-  <svg
-
-    id="clock"
-
-    viewBox="0 0 360 360"
-
-    xmlns="http://www.w3.org/2000/svg"
-
-    aria-label="クロノス盤">
-
-  </svg>
-
-</section>
-
-<!-- 操作 -->
-
-<section class="controls">
-
-  <button
-
-    type="button"
-
-    id="reset"
-
-    aria-label="すべてリセット">
-
-    <span>すべて</span>
-
-    <span>リセット</span>
-
-  </button>
-
-  <div class="move-buttons">
-
-    <button type="button" class="move-button" id="back">
-
-      ◀ 戻る
+      <span>リセット</span>
 
     </button>
 
-    <button type="button" class="move-button" id="forward">
+    <div class="move-buttons">
 
-      進む ▶
+      <button
 
-    </button>
+        type="button"
 
-  </div>
+        class="move-button"
 
-</section>
+        id="back">
 
-<!-- プレイヤー2 -->
+        ◀ 戻る
 
-<section class="player">
+      </button>
 
-  <div class="player-name">プレイヤー2</div>
+      <button
 
-  <div class="hp" id="hp2">100</div>
+        type="button"
 
-  <div class="hp-buttons">
+        class="move-button"
 
-    <button type="button" data-player="1" data-delta="-20">−20</button>
+        id="forward">
 
-    <button type="button" data-player="1" data-delta="-10">−10</button>
+        進む ▶
 
-    <button type="button" data-player="1" data-delta="10">＋10</button>
+      </button>
 
-    <button type="button" data-player="1" data-delta="20">＋20</button>
+    </div>
 
-  </div>
+  </section>
 
-</section>
+  <!-- プレイヤー2 -->
+
+  <section class="player">
+
+    <div class="player-name">
+
+      プレイヤー2
+
+    </div>
+
+    <div class="hp" id="hp2">100</div>
+
+    <div class="hp-buttons">
+
+      <button type="button" data-player="1" data-delta="-20">−20</button>
+
+      <button type="button" data-player="1" data-delta="-10">−10</button>
+
+      <button type="button" data-player="1" data-delta="10">＋10</button>
+
+      <button type="button" data-player="1" data-delta="20">＋20</button>
+
+    </div>
+
+  </section>
 
 </main>
 
@@ -672,11 +692,19 @@ svg text {
 
 "use strict";
 
-/* ゲーム状態 */
+/* =========================
+
+   ゲーム状態
+
+========================= */
 
 let hp = [100, 100];
 
+// 夜5/9（真夜中）から開始
+
 let position = 4;
+
+// クロノス盤の反転状態
 
 let isFlipped = false;
 
@@ -698,7 +726,11 @@ const COLORS = {
 
 };
 
-/* SVG作成 */
+/* =========================
+
+   SVG作成
+
+========================= */
 
 function createSVG(tag, attrs = {}, parent = svg) {
 
@@ -716,9 +748,15 @@ function createSVG(tag, attrs = {}, parent = svg) {
 
 }
 
-/* グラデーション */
+/* =========================
+
+   グラデーション
+
+========================= */
 
 const defs = createSVG("defs");
+
+/* 月 */
 
 const moonGradient = createSVG("radialGradient", {
 
@@ -756,6 +794,8 @@ createSVG("stop", {
 
 }, moonGradient);
 
+/* 太陽 */
+
 const sunGradient = createSVG("radialGradient", {
 
   id: "sunGradient"
@@ -778,7 +818,45 @@ createSVG("stop", {
 
 }, sunGradient);
 
-/* 外枠 */
+/* 中央の空 */
+
+const skyGradient = createSVG("linearGradient", {
+
+  id: "skyGradient",
+
+  x1: "0%",
+
+  y1: "0%",
+
+  x2: "0%",
+
+  y2: "100%"
+
+}, defs);
+
+const skyTop = createSVG("stop", {
+
+  offset: "0%",
+
+  "stop-color": "#10214d"
+
+}, skyGradient);
+
+const skyBottom = createSVG("stop", {
+
+  offset: "100%",
+
+  "stop-color": "#253f75"
+
+}, skyGradient);
+
+/* =========================
+
+   クロノスの外枠
+
+   色は昼夜で変えない
+
+========================= */
 
 createSVG("circle", {
 
@@ -808,6 +886,12 @@ createSVG("path", {
 
 });
 
+/* =========================
+
+   中央の円形背景
+
+========================= */
+
 createSVG("circle", {
 
   cx: 180,
@@ -816,7 +900,7 @@ createSVG("circle", {
 
   r: 102,
 
-  fill: COLORS.background,
+  fill: "url(#skyGradient)",
 
   stroke: COLORS.line,
 
@@ -824,25 +908,31 @@ createSVG("circle", {
 
 });
 
-/* 星 */
+/* =========================
+
+   中央の夜空の星
+
+========================= */
+
+const stars = createSVG("g");
 
 [
 
-  [145,116],
+  [145, 116],
 
-  [172,131],
+  [172, 131],
 
-  [209,117],
+  [209, 117],
 
-  [121,144],
+  [121, 144],
 
-  [239,144],
+  [239, 144],
 
-  [125,210],
+  [125, 210],
 
-  [232,210]
+  [232, 210]
 
-].forEach(([x,y]) => {
+].forEach(([x, y]) => {
 
   createSVG("circle", {
 
@@ -852,13 +942,93 @@ createSVG("circle", {
 
     r: 1.1,
 
-    fill: "#d7dcf3"
+    fill: "#e8eeff"
 
-  });
+  }, stars);
 
 });
 
-/* 月 */
+/* =========================
+
+   中央の昼の雲
+
+========================= */
+
+const clouds = createSVG("g", {
+
+  opacity: 0
+
+});
+
+function drawCloud(x, y, scale) {
+
+  const group = createSVG("g", {
+
+    transform: `translate(${x} ${y}) scale(${scale})`
+
+  }, clouds);
+
+  createSVG("ellipse", {
+
+    cx: 0,
+
+    cy: 0,
+
+    rx: 24,
+
+    ry: 6,
+
+    fill: "#ffffff",
+
+    opacity: 0.35
+
+  }, group);
+
+  createSVG("ellipse", {
+
+    cx: -9,
+
+    cy: -4,
+
+    rx: 12,
+
+    ry: 7,
+
+    fill: "#ffffff",
+
+    opacity: 0.35
+
+  }, group);
+
+  createSVG("ellipse", {
+
+    cx: 8,
+
+    cy: -5,
+
+    rx: 15,
+
+    ry: 8,
+
+    fill: "#ffffff",
+
+    opacity: 0.35
+
+  }, group);
+
+}
+
+drawCloud(180, 125, 0.65);
+
+drawCloud(140, 195, 0.5);
+
+drawCloud(215, 195, 0.55);
+
+/* =========================
+
+   月の描画
+
+========================= */
 
 function drawMoon(group, index) {
 
@@ -876,7 +1046,15 @@ function drawMoon(group, index) {
 
   }, group);
 
-  if (index === 8) return;
+  // 新月
+
+  if (index === 8) {
+
+    return;
+
+  }
+
+  // 満月
 
   if (index === 4) {
 
@@ -914,7 +1092,7 @@ function drawMoon(group, index) {
 
       `A ${radius} ${radius} 0 0 1 0 ${radius}`,
 
-      `A ${Math.max(0.01,terminator)} ${radius} 0 0 ${illumination < 0.5 ? 0 : 1} 0 ${-radius}`,
+      `A ${Math.max(0.01, terminator)} ${radius} 0 0 ${illumination < 0.5 ? 0 : 1} 0 ${-radius}`,
 
       "Z"
 
@@ -928,7 +1106,7 @@ function drawMoon(group, index) {
 
       `A ${radius} ${radius} 0 0 0 0 ${radius}`,
 
-      `A ${Math.max(0.01,terminator)} ${radius} 0 0 ${illumination < 0.5 ? 1 : 0} 0 ${-radius}`,
+      `A ${Math.max(0.01, terminator)} ${radius} 0 0 ${illumination < 0.5 ? 1 : 0} 0 ${-radius}`,
 
       "Z"
 
@@ -938,7 +1116,7 @@ function drawMoon(group, index) {
 
   createSVG("path", {
 
-    d,
+    d: d,
 
     fill: "url(#moonGradient)"
 
@@ -946,7 +1124,11 @@ function drawMoon(group, index) {
 
 }
 
-/* 太陽 */
+/* =========================
+
+   太陽の描画
+
+========================= */
 
 function drawSun(group, dayIndex) {
 
@@ -1018,11 +1200,21 @@ function drawSun(group, dayIndex) {
 
     const y2 = Math.sin(angle) * outer;
 
-    if (distanceFromNoon >= 3 && y2 > 0) continue;
+    if (distanceFromNoon >= 3 && y2 > 0) {
+
+      continue;
+
+    }
 
     createSVG("line", {
 
-      x1, y1, x2, y2,
+      x1: x1,
+
+      y1: y1,
+
+      x2: x2,
+
+      y2: y2,
 
       stroke: color,
 
@@ -1036,7 +1228,11 @@ function drawSun(group, dayIndex) {
 
 }
 
-/* 18マス */
+/* =========================
+
+   クロノス18マス
+
+========================= */
 
 const marks = [];
 
@@ -1098,7 +1294,11 @@ for (let i = 0; i < 18; i++) {
 
 }
 
-/* 中央表示 */
+/* =========================
+
+   中央の月・太陽
+
+========================= */
 
 const centerObject = createSVG("g");
 
@@ -1158,13 +1358,65 @@ function drawCenterSymbol() {
 
 }
 
-/* 描画更新 */
+/* =========================
+
+   中央背景の昼夜切替
+
+========================= */
+
+function updateSky() {
+
+  const isNight = position < 9;
+
+  if (isNight) {
+
+    // 夜空
+
+    skyTop.setAttribute("stop-color", "#10214d");
+
+    skyBottom.setAttribute("stop-color", "#253f75");
+
+    stars.setAttribute("opacity", "1");
+
+    clouds.setAttribute("opacity", "0");
+
+    phaseLabel.setAttribute("fill", "#f2e6d1");
+
+    phaseNumber.setAttribute("fill", "#ffffff");
+
+  } else {
+
+    // 昼の青空
+
+    skyTop.setAttribute("stop-color", "#327ec4");
+
+    skyBottom.setAttribute("stop-color", "#8dd5f2");
+
+    stars.setAttribute("opacity", "0");
+
+    clouds.setAttribute("opacity", "1");
+
+    phaseLabel.setAttribute("fill", "#ffffff");
+
+    phaseNumber.setAttribute("fill", "#ffffff");
+
+  }
+
+}
+
+/* =========================
+
+   表示更新
+
+========================= */
 
 function render() {
 
   document.getElementById("hp1").textContent = hp[0];
 
   document.getElementById("hp2").textContent = hp[1];
+
+  updateSky();
 
   marks.forEach((halo, i) => {
 
@@ -1190,19 +1442,23 @@ function render() {
 
   phaseLabel.textContent = isNight ? "夜" : "昼";
 
-  phaseNumber.textContent =
+  // 夜5/9は真夜中、昼5/9は真昼
 
-    number === 5
+  phaseNumber.textContent = number === 5
 
-      ? (isNight ? "真夜中" : "正午")
+    ? (isNight ? "真夜中" : "真昼")
 
-      : `${number} / 9`;
+    : `${number} / 9`;
 
   drawCenterSymbol();
 
 }
 
-/* HP操作 */
+/* =========================
+
+   HP操作
+
+========================= */
 
 document.querySelectorAll("[data-player]").forEach(button => {
 
@@ -1226,7 +1482,11 @@ document.querySelectorAll("[data-player]").forEach(button => {
 
 });
 
-/* 戻る */
+/* =========================
+
+   戻る
+
+========================= */
 
 document.getElementById("back").addEventListener("click", () => {
 
@@ -1236,7 +1496,11 @@ document.getElementById("back").addEventListener("click", () => {
 
 });
 
-/* 進む */
+/* =========================
+
+   進む
+
+========================= */
 
 document.getElementById("forward").addEventListener("click", () => {
 
@@ -1246,11 +1510,15 @@ document.getElementById("forward").addEventListener("click", () => {
 
 });
 
-/* リセット */
+/* =========================
+
+   すべてリセット
+
+========================= */
 
 document.getElementById("reset").addEventListener("click", () => {
 
-  hp = [100,100];
+  hp = [100, 100];
 
   position = 4;
 
@@ -1258,7 +1526,11 @@ document.getElementById("reset").addEventListener("click", () => {
 
 });
 
-/* クロノス盤反転 */
+/* =========================
+
+   クロノス盤反転
+
+========================= */
 
 const flipButton = document.getElementById("flip");
 
@@ -1278,7 +1550,11 @@ flipButton.addEventListener("click", () => {
 
 });
 
-/* 画面自動調整 */
+/* =========================
+
+   画面サイズ自動調整
+
+========================= */
 
 const app = document.getElementById("app");
 
@@ -1318,7 +1594,7 @@ function fitScreen() {
 
   setVariable("--reset-size", "54px");
 
-  setVariable("--flip-size", "38px");
+  setVariable("--flip-size", "36px");
 
   app.style.width = screenWidth + "px";
 
@@ -1370,7 +1646,7 @@ function fitScreen() {
 
     setVariable("--reset-size", "48px");
 
-    setVariable("--flip-size", "34px");
+    setVariable("--flip-size", "32px");
 
     const compactHeight = app.scrollHeight;
 
@@ -1380,7 +1656,7 @@ function fitScreen() {
 
       maxClock,
 
-      clockSize + Math.max(0,freeSpace)
+      clockSize + Math.max(0, freeSpace)
 
     );
 
