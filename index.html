@@ -8,7 +8,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 
 <meta name="theme-color" content="#111d49">
 
@@ -32,35 +32,25 @@
 
 :root {
 
-  --edge: 8px;
+  --edge: 7px;
 
-  --gap: 7px;
-
-  --panel-pad: 9px;
-
-  --hp-font: 48px;
-
-  --hp-button: 45px;
-
-  --move-button: 46px;
-
-  --reset-button: 39px;
+  --gap: 5px;
 
   --clock-size: 350px;
 
-}
+  --hp-size: 38px;
 
-html {
+  --hp-button-height: 35px;
 
-  width: 100%;
+  --move-height: 42px;
 
-  height: 100%;
+  --reset-height: 34px;
 
-  background: #111d49;
-
-  overflow: hidden;
+  --panel-padding: 6px;
 
 }
+
+html,
 
 body {
 
@@ -72,21 +62,23 @@ body {
 
   overflow: hidden;
 
-  background: linear-gradient(
+  background: #111d49;
 
-    180deg,
+}
 
-    #111d49 0%,
+body {
 
-    #202f69 100%
+  color: white;
 
-  );
+  font-family:
 
-  color: #fff;
+    -apple-system,
 
-  font-family: -apple-system, BlinkMacSystemFont,
+    BlinkMacSystemFont,
 
-    "Hiragino Kaku Gothic ProN", sans-serif;
+    "Hiragino Kaku Gothic ProN",
+
+    sans-serif;
 
   -webkit-text-size-adjust: 100%;
 
@@ -100,21 +92,21 @@ button {
 
   font: inherit;
 
-  color: inherit;
+  color: white;
 
   cursor: pointer;
 
   touch-action: manipulation;
 
-  -webkit-user-select: none;
-
   user-select: none;
+
+  -webkit-user-select: none;
 
 }
 
 button:active {
 
-  filter: brightness(1.25);
+  filter: brightness(1.3);
 
 }
 
@@ -125,6 +117,16 @@ button:active {
   inset: 0;
 
   overflow: hidden;
+
+  background: linear-gradient(
+
+    180deg,
+
+    #111d49 0%,
+
+    #202f69 100%
+
+  );
 
 }
 
@@ -138,11 +140,7 @@ button:active {
 
   width: 100%;
 
-  padding:
-
-    0
-
-    var(--edge);
+  padding: 0 var(--edge);
 
   display: flex;
 
@@ -150,11 +148,11 @@ button:active {
 
   align-items: stretch;
 
-  justify-content: center;
-
   gap: var(--gap);
 
 }
+
+/* タイトル */
 
 h1 {
 
@@ -164,17 +162,19 @@ h1 {
 
   color: #f3e9d3;
 
-  font-size: 19px;
+  font-size: 18px;
+
+  line-height: 1.25;
 
   font-weight: 650;
 
   letter-spacing: 3px;
 
-  line-height: 1.4;
-
   flex-shrink: 0;
 
 }
+
+/* HP管理エリア */
 
 .player {
 
@@ -184,15 +184,17 @@ h1 {
 
   border: 1px solid #91a2d0;
 
-  border-radius: 14px;
+  border-radius: 12px;
 
-  padding: var(--panel-pad);
+  padding: var(--panel-padding);
 
   text-align: center;
 
   flex-shrink: 0;
 
 }
+
+/* プレイヤー1は全体を180度回転 */
 
 .player.one {
 
@@ -204,35 +206,37 @@ h1 {
 
   color: #f3e9d3;
 
-  font-size: 16px;
+  font-size: 14px;
 
-  line-height: 1.2;
+  line-height: 1.15;
 
 }
 
 .hp {
 
-  font-size: var(--hp-font);
+  font-size: var(--hp-size);
 
-  line-height: 1.05;
+  line-height: 1;
 
   font-weight: 750;
 
-  margin: 5px 0 8px;
+  margin: 2px 0 5px;
 
   font-variant-numeric: tabular-nums;
 
 }
 
-.hp-buttons {
+/* HP操作ボタン */
 
-  width: 100%;
+.hp-buttons {
 
   display: grid;
 
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4,minmax(0,1fr));
 
-  gap: 6px;
+  gap: 5px;
+
+  width: 100%;
 
 }
 
@@ -242,27 +246,25 @@ h1 {
 
   width: 100%;
 
-  height: var(--hp-button);
+  height: var(--hp-button-height);
 
   padding: 0 2px;
 
   border: 1px solid #a3b2db;
 
-  border-radius: 10px;
+  border-radius: 8px;
 
   background: #4b62a4;
 
-  font-size: 18px;
+  font-size: 16px;
 
   line-height: 1;
 
   white-space: nowrap;
 
-  word-break: keep-all;
-
-  overflow-wrap: normal;
-
 }
+
+/* クロノスエリア */
 
 .clock-area {
 
@@ -274,7 +276,7 @@ h1 {
 
   justify-content: center;
 
-  gap: 3px;
+  gap: 2px;
 
   flex-shrink: 0;
 
@@ -282,11 +284,11 @@ h1 {
 
 .clock-label {
 
+  font-size: 12px;
+
   color: #e0e7fb;
 
-  font-size: 13px;
-
-  line-height: 1.2;
+  line-height: 1.15;
 
 }
 
@@ -308,15 +310,17 @@ h1 {
 
 }
 
+/* 移動ボタン */
+
 .move-buttons {
 
   display: grid;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2,minmax(0,1fr));
 
-  gap: 12px;
+  gap: 10px;
 
-  width: 78%;
+  width: 82%;
 
   margin: 0 auto;
 
@@ -328,19 +332,21 @@ h1 {
 
   min-width: 0;
 
-  height: var(--move-button);
+  height: var(--move-height);
 
   border: 1px solid #a3b2db;
 
-  border-radius: 10px;
+  border-radius: 9px;
 
   background: #4b62a4;
 
-  font-size: 17px;
+  font-size: 16px;
 
   white-space: nowrap;
 
 }
+
+/* リセット */
 
 .reset-wrap {
 
@@ -352,19 +358,19 @@ h1 {
 
 #reset {
 
-  height: var(--reset-button);
+  min-width: 145px;
 
-  min-width: 150px;
+  height: var(--reset-height);
 
-  padding: 0 18px;
+  padding: 0 16px;
 
   border: 1px solid #a3b2db;
 
-  border-radius: 10px;
+  border-radius: 9px;
 
   background: #4b62a4;
 
-  font-size: 15px;
+  font-size: 14px;
 
   white-space: nowrap;
 
@@ -372,9 +378,9 @@ h1 {
 
 svg text {
 
-  user-select: none;
-
   pointer-events: none;
+
+  user-select: none;
 
 }
 
@@ -388,19 +394,19 @@ svg text {
 
   :root {
 
-    --edge: 6px;
+    --edge: 5px;
 
   }
 
   .hp-buttons {
 
-    gap: 4px;
+    gap: 3px;
 
   }
 
   .hp-buttons button {
 
-    font-size: 15px;
+    font-size: 14px;
 
   }
 
@@ -420,89 +426,125 @@ svg text {
 
 <div id="viewport">
 
-  <main id="app">
+<main id="app">
 
-    <h1>クロノス管理</h1>
+  <h1>クロノス管理</h1>
 
-    <!-- プレイヤー1：180度回転 -->
+  <!-- プレイヤー1 -->
 
-    <section class="player one">
+  <section class="player one">
 
-      <div class="player-name">プレイヤー1</div>
+    <div class="player-name">
 
-      <div class="hp" id="hp1">100</div>
-
-      <div class="hp-buttons">
-
-        <button type="button" data-player="0" data-delta="-20">−20</button>
-
-        <button type="button" data-player="0" data-delta="-10">−10</button>
-
-        <button type="button" data-player="0" data-delta="10">＋10</button>
-
-        <button type="button" data-player="0" data-delta="20">＋20</button>
-
-      </div>
-
-    </section>
-
-    <section class="clock-area">
-
-      <div class="clock-label">現在のクロノス</div>
-
-      <svg id="clock"
-
-        viewBox="0 0 360 360"
-
-        xmlns="http://www.w3.org/2000/svg"
-
-        aria-label="クロノス盤">
-
-      </svg>
-
-    </section>
-
-    <div class="move-buttons">
-
-      <button type="button" id="back">◀ 戻る</button>
-
-      <button type="button" id="forward">進む ▶</button>
+      プレイヤー1
 
     </div>
 
-    <!-- プレイヤー2 -->
+    <div class="hp" id="hp1">
 
-    <section class="player">
-
-      <div class="player-name">プレイヤー2</div>
-
-      <div class="hp" id="hp2">100</div>
-
-      <div class="hp-buttons">
-
-        <button type="button" data-player="1" data-delta="-20">−20</button>
-
-        <button type="button" data-player="1" data-delta="-10">−10</button>
-
-        <button type="button" data-player="1" data-delta="10">＋10</button>
-
-        <button type="button" data-player="1" data-delta="20">＋20</button>
-
-      </div>
-
-    </section>
-
-    <div class="reset-wrap">
-
-      <button type="button" id="reset">
-
-        すべてリセット
-
-      </button>
+      100
 
     </div>
 
-  </main>
+    <div class="hp-buttons">
+
+      <button type="button" data-player="0" data-delta="-20">−20</button>
+
+      <button type="button" data-player="0" data-delta="-10">−10</button>
+
+      <button type="button" data-player="0" data-delta="10">＋10</button>
+
+      <button type="button" data-player="0" data-delta="20">＋20</button>
+
+    </div>
+
+  </section>
+
+  <!-- クロノス -->
+
+  <section class="clock-area">
+
+    <div class="clock-label">
+
+      現在のクロノス
+
+    </div>
+
+    <svg
+
+      id="clock"
+
+      viewBox="0 0 360 360"
+
+      xmlns="http://www.w3.org/2000/svg"
+
+      aria-label="クロノス盤">
+
+    </svg>
+
+  </section>
+
+  <!-- 移動 -->
+
+  <div class="move-buttons">
+
+    <button type="button" id="back">
+
+      ◀ 戻る
+
+    </button>
+
+    <button type="button" id="forward">
+
+      進む ▶
+
+    </button>
+
+  </div>
+
+  <!-- プレイヤー2 -->
+
+  <section class="player">
+
+    <div class="player-name">
+
+      プレイヤー2
+
+    </div>
+
+    <div class="hp" id="hp2">
+
+      100
+
+    </div>
+
+    <div class="hp-buttons">
+
+      <button type="button" data-player="1" data-delta="-20">−20</button>
+
+      <button type="button" data-player="1" data-delta="-10">−10</button>
+
+      <button type="button" data-player="1" data-delta="10">＋10</button>
+
+      <button type="button" data-player="1" data-delta="20">＋20</button>
+
+    </div>
+
+  </section>
+
+  <!-- リセット -->
+
+  <div class="reset-wrap">
+
+    <button type="button" id="reset">
+
+      すべてリセット
+
+    </button>
+
+  </div>
+
+</main>
 
 </div>
 
@@ -510,11 +552,11 @@ svg text {
 
 "use strict";
 
-/* =========================
+/* ==================================
 
    ゲーム状態
 
-========================= */
+================================== */
 
 let hp = [100, 100];
 
@@ -540,9 +582,17 @@ const COLORS = {
 
 };
 
+/* ==================================
+
+   SVG作成
+
+================================== */
+
 function createSVG(tag, attrs = {}, parent = svg) {
 
-  const element = document.createElementNS(NS, tag);
+  const element =
+
+    document.createElementNS(NS, tag);
 
   for (const [key, value] of Object.entries(attrs)) {
 
@@ -556,11 +606,11 @@ function createSVG(tag, attrs = {}, parent = svg) {
 
 }
 
-/* =========================
+/* ==================================
 
    グラデーション
 
-========================= */
+================================== */
 
 const defs = createSVG("defs");
 
@@ -622,11 +672,11 @@ createSVG("stop", {
 
 }, sunGradient);
 
-/* =========================
+/* ==================================
 
    クロノス盤
 
-========================= */
+================================== */
 
 createSVG("circle", {
 
@@ -672,29 +722,29 @@ createSVG("circle", {
 
 });
 
-/* =========================
+/* ==================================
 
    星
 
-========================= */
+================================== */
 
 [
 
-  [145, 116],
+  [145,116],
 
-  [172, 131],
+  [172,131],
 
-  [209, 117],
+  [209,117],
 
-  [121, 144],
+  [121,144],
 
-  [239, 144],
+  [239,144],
 
-  [125, 210],
+  [125,210],
 
-  [232, 210]
+  [232,210]
 
-].forEach(([x, y]) => {
+].forEach(([x,y]) => {
 
   createSVG("circle", {
 
@@ -710,11 +760,11 @@ createSVG("circle", {
 
 });
 
-/* =========================
+/* ==================================
 
    月の満ち欠け
 
-========================= */
+================================== */
 
 function drawMoon(group, index) {
 
@@ -778,7 +828,7 @@ function drawMoon(group, index) {
 
       `A ${radius} ${radius} 0 0 1 0 ${radius}`,
 
-      `A ${Math.max(0.01, terminator)} ${radius} 0 0 ${illumination < 0.5 ? 0 : 1} 0 ${-radius}`,
+      `A ${Math.max(0.01,terminator)} ${radius} 0 0 ${illumination < 0.5 ? 0 : 1} 0 ${-radius}`,
 
       "Z"
 
@@ -792,7 +842,7 @@ function drawMoon(group, index) {
 
       `A ${radius} ${radius} 0 0 0 0 ${radius}`,
 
-      `A ${Math.max(0.01, terminator)} ${radius} 0 0 ${illumination < 0.5 ? 1 : 0} 0 ${-radius}`,
+      `A ${Math.max(0.01,terminator)} ${radius} 0 0 ${illumination < 0.5 ? 1 : 0} 0 ${-radius}`,
 
       "Z"
 
@@ -810,17 +860,21 @@ function drawMoon(group, index) {
 
 }
 
-/* =========================
+/* ==================================
 
    太陽の変化
 
-========================= */
+================================== */
 
 function drawSun(group, dayIndex) {
 
-  const distanceFromNoon = Math.abs(dayIndex - 4);
+  const distanceFromNoon =
 
-  const heightRatio = 1 - distanceFromNoon / 4;
+    Math.abs(dayIndex - 4);
+
+  const heightRatio =
+
+    1 - distanceFromNoon / 4;
 
   const color =
 
@@ -830,7 +884,7 @@ function drawSun(group, dayIndex) {
 
       : COLORS.gold;
 
-  // 昼5/9は従来の正午UI
+  // 昼5/9（正午）は従来のUI
 
   if (dayIndex !== 4) {
 
@@ -852,9 +906,13 @@ function drawSun(group, dayIndex) {
 
   }
 
-  const radius = 5 + heightRatio * 4;
+  const radius =
 
-  const sunY = 10 - heightRatio * 10;
+    5 + heightRatio * 4;
+
+  const sunY =
+
+    10 - heightRatio * 10;
 
   const sunGroup = createSVG("g", {
 
@@ -876,21 +934,41 @@ function drawSun(group, dayIndex) {
 
   for (let j = 0; j < 8; j++) {
 
-    const angle = j * Math.PI / 4;
+    const angle =
 
-    const inner = radius + 3;
+      j * Math.PI / 4;
 
-    const outer = radius + 7;
+    const inner =
 
-    const x1 = Math.cos(angle) * inner;
+      radius + 3;
 
-    const y1 = Math.sin(angle) * inner;
+    const outer =
 
-    const x2 = Math.cos(angle) * outer;
+      radius + 7;
 
-    const y2 = Math.sin(angle) * outer;
+    const x1 =
 
-    if (distanceFromNoon >= 3 && y2 > 0) {
+      Math.cos(angle) * inner;
+
+    const y1 =
+
+      Math.sin(angle) * inner;
+
+    const x2 =
+
+      Math.cos(angle) * outer;
+
+    const y2 =
+
+      Math.sin(angle) * outer;
+
+    if (
+
+      distanceFromNoon >= 3 &&
+
+      y2 > 0
+
+    ) {
 
       continue;
 
@@ -912,11 +990,11 @@ function drawSun(group, dayIndex) {
 
 }
 
-/* =========================
+/* ==================================
 
-   18マス配置
+   18マス
 
-========================= */
+================================== */
 
 const marks = [];
 
@@ -926,9 +1004,13 @@ for (let i = 0; i < 18; i++) {
 
     (-80 + i * 20) * Math.PI / 180;
 
-  const x = 180 + 146 * Math.sin(angle);
+  const x =
 
-  const y = 180 - 146 * Math.cos(angle);
+    180 + 146 * Math.sin(angle);
+
+  const y =
+
+    180 - 146 * Math.cos(angle);
 
   const group = createSVG("g", {
 
@@ -980,19 +1062,19 @@ for (let i = 0; i < 18; i++) {
 
 }
 
-/* =========================
+/* ==================================
 
    中央表示
 
-========================= */
+================================== */
 
-const centerObject = createSVG("g");
+const centerObject =
 
-const centerSymbol = createSVG(
+  createSVG("g");
 
-  "g", {}, centerObject
+const centerSymbol =
 
-);
+  createSVG("g", {}, centerObject);
 
 const phaseLabel = createSVG("text", {
 
@@ -1026,17 +1108,23 @@ function drawCenterSymbol() {
 
   centerSymbol.replaceChildren();
 
-  const isNight = position < 9;
+  const isNight =
 
-  const index = isNight
+    position < 9;
 
-    ? position
+  const index =
 
-    : position - 9;
+    isNight
+
+      ? position
+
+      : position - 9;
 
   const group = createSVG("g", {
 
-    transform: "translate(180 174) scale(2.25)"
+    transform:
+
+      "translate(180 174) scale(2.25)"
 
   }, centerSymbol);
 
@@ -1052,43 +1140,75 @@ function drawCenterSymbol() {
 
 }
 
-/* =========================
+/* ==================================
 
    表示更新
 
-========================= */
+================================== */
 
 function render() {
 
-  document.getElementById("hp1").textContent = hp[0];
+  document.getElementById("hp1")
 
-  document.getElementById("hp2").textContent = hp[1];
+    .textContent = hp[0];
 
-  marks.forEach((halo, i) => {
+  document.getElementById("hp2")
+
+    .textContent = hp[1];
+
+  marks.forEach((halo,i) => {
 
     if (i === position) {
 
-      halo.setAttribute("stroke", COLORS.gold);
+      halo.setAttribute(
 
-      halo.setAttribute("fill", "#f4d78e18");
+        "stroke",
+
+        COLORS.gold
+
+      );
+
+      halo.setAttribute(
+
+        "fill",
+
+        "#f4d78e18"
+
+      );
 
     } else {
 
-      halo.setAttribute("stroke", "none");
+      halo.setAttribute(
 
-      halo.setAttribute("fill", "none");
+        "stroke",
+
+        "none"
+
+      );
+
+      halo.setAttribute(
+
+        "fill",
+
+        "none"
+
+      );
 
     }
 
   });
 
-  const isNight = position < 9;
+  const isNight =
 
-  const number = isNight
+    position < 9;
 
-    ? position + 1
+  const number =
 
-    : position - 8;
+    isNight
+
+      ? position + 1
+
+      : position - 8;
 
   phaseLabel.textContent =
 
@@ -1098,11 +1218,17 @@ function render() {
 
     phaseNumber.textContent =
 
-      isNight ? "真夜中" : "正午";
+      isNight
+
+        ? "真夜中"
+
+        : "正午";
 
   } else {
 
-    phaseNumber.textContent = `${number} / 9`;
+    phaseNumber.textContent =
+
+      `${number} / 9`;
 
   }
 
@@ -1110,11 +1236,11 @@ function render() {
 
 }
 
-/* =========================
+/* ==================================
 
    HP操作
 
-========================= */
+================================== */
 
 document.querySelectorAll(
 
@@ -1122,45 +1248,55 @@ document.querySelectorAll(
 
 ).forEach(button => {
 
-  button.addEventListener("click", () => {
+  button.addEventListener(
 
-    const player = Number(
+    "click",
 
-      button.dataset.player
+    () => {
 
-    );
+      const player =
 
-    const delta = Number(
+        Number(button.dataset.player);
 
-      button.dataset.delta
+      const delta =
 
-    );
+        Number(button.dataset.delta);
 
-    hp[player] = Math.max(
+      hp[player] = Math.max(
 
-      0,
+        0,
 
-      Math.min(100, hp[player] + delta)
+        Math.min(
 
-    );
+          100,
 
-    render();
+          hp[player] + delta
 
-  });
+        )
+
+      );
+
+      render();
+
+    }
+
+  );
 
 });
 
-/* =========================
+/* ==================================
 
    左右移動
 
-========================= */
+================================== */
 
 document.getElementById("back")
 
   .addEventListener("click", () => {
 
-    position = (position + 17) % 18;
+    position =
+
+      (position + 17) % 18;
 
     render();
 
@@ -1170,23 +1306,25 @@ document.getElementById("forward")
 
   .addEventListener("click", () => {
 
-    position = (position + 1) % 18;
+    position =
+
+      (position + 1) % 18;
 
     render();
 
   });
 
-/* =========================
+/* ==================================
 
    リセット
 
-========================= */
+================================== */
 
 document.getElementById("reset")
 
   .addEventListener("click", () => {
 
-    hp = [100, 100];
+    hp = [100,100];
 
     position = 4;
 
@@ -1194,89 +1332,73 @@ document.getElementById("reset")
 
   });
 
-/* =========================
+/* ==================================
 
-   画面いっぱいに自動調整
+   画面サイズ自動調整
 
-========================= */
+   HPエリアを小さくし
 
-const app = document.getElementById("app");
+   クロノスを優先して拡大
 
-const viewport = document.getElementById("viewport");
+================================== */
+
+const app =
+
+  document.getElementById("app");
+
+const viewport =
+
+  document.getElementById("viewport");
+
+function setVariable(name,value) {
+
+  document.documentElement.style
+
+    .setProperty(name,value);
+
+}
 
 function fitScreen() {
 
-  const visibleWidth = viewport.clientWidth;
+  const screenWidth =
 
-  const visibleHeight = window.visualViewport
+    viewport.clientWidth;
 
-    ? window.visualViewport.height
+  const screenHeight =
 
-    : viewport.clientHeight;
+    window.visualViewport
 
-  // 上下にわずかな余裕だけ残す
+      ? window.visualViewport.height
 
-  const availableWidth = visibleWidth - 4;
+      : viewport.clientHeight;
 
-  const availableHeight = visibleHeight - 10;
+  const availableHeight =
 
-  // まず標準サイズで寸法を計測
+    screenHeight - 10;
 
-  document.documentElement.style.setProperty(
+  const availableWidth =
 
-    "--gap", "7px"
+    screenWidth - 4;
 
-  );
+  // コンパクトなHPパネルを基本にする
 
-  document.documentElement.style.setProperty(
+  setVariable("--edge","7px");
 
-    "--panel-pad", "9px"
+  setVariable("--gap","5px");
 
-  );
+  setVariable("--panel-padding","6px");
 
-  document.documentElement.style.setProperty(
+  setVariable("--hp-size","38px");
 
-    "--hp-font", "48px"
+  setVariable("--hp-button-height","35px");
 
-  );
+  setVariable("--move-height","42px");
 
-  document.documentElement.style.setProperty(
+  setVariable("--reset-height","34px");
 
-    "--hp-button", "45px"
+  app.style.width =
 
-  );
-
-  document.documentElement.style.setProperty(
-
-    "--move-button", "46px"
-
-  );
-
-  document.documentElement.style.setProperty(
-
-    "--reset-button", "39px"
-
-  );
-
-  // クロノス盤を横幅に合わせる
-
-  const maxClockWidth = Math.min(
-
-    availableWidth - 16,
-
-    440
-
-  );
-
-  document.documentElement.style.setProperty(
-
-    "--clock-size",
-
-    maxClockWidth + "px"
-
-  );
-
-  app.style.width = visibleWidth + "px";
+    screenWidth + "px";
 
   app.style.transform = "none";
 
@@ -1284,83 +1406,115 @@ function fitScreen() {
 
   app.style.top = "0px";
 
-  // 実際のコンテンツの高さ
+  // 横幅いっぱいに近い盤サイズ
 
-  let contentHeight = app.scrollHeight;
+  const maxClock = Math.min(
 
-  // 高さが足りない場合、盤を優先して縮小
+    availableWidth - 10,
+
+    470
+
+  );
+
+  setVariable(
+
+    "--clock-size",
+
+    maxClock + "px"
+
+  );
+
+  // まず盤以外が占める高さを計測
+
+  const fullHeight =
+
+    app.scrollHeight;
+
+  const otherHeight =
+
+    fullHeight - maxClock;
+
+  // 盤に使える縦方向の最大スペース
+
+  let clockSize = Math.min(
+
+    maxClock,
+
+    availableHeight - otherHeight
+
+  );
+
+  // 極端に小さくしない
+
+  clockSize = Math.max(
+
+    180,
+
+    clockSize
+
+  );
+
+  setVariable(
+
+    "--clock-size",
+
+    clockSize + "px"
+
+  );
+
+  let contentHeight =
+
+    app.scrollHeight;
+
+  // それでも高さ不足なら余白を圧縮
 
   if (contentHeight > availableHeight) {
 
-    const overflow = contentHeight - availableHeight;
+    setVariable("--gap","3px");
 
-    const newClock = Math.max(
+    setVariable("--panel-padding","4px");
 
-      180,
+    setVariable("--hp-size","34px");
 
-      maxClockWidth - overflow
+    setVariable("--hp-button-height","32px");
+
+    setVariable("--move-height","38px");
+
+    setVariable("--reset-height","32px");
+
+    // 圧縮で生まれたスペースを盤に戻す
+
+    const heightAfterCompact =
+
+      app.scrollHeight;
+
+    const freeSpace =
+
+      availableHeight - heightAfterCompact;
+
+    clockSize = Math.min(
+
+      maxClock,
+
+      clockSize + Math.max(0,freeSpace)
 
     );
 
-    document.documentElement.style.setProperty(
+    setVariable(
 
       "--clock-size",
 
-      newClock + "px"
+      clockSize + "px"
 
     );
 
   }
 
-  contentHeight = app.scrollHeight;
+  contentHeight =
 
-  // まだ高さが足りない場合は
+    app.scrollHeight;
 
-  // 余白とHPパネルを少しコンパクトに
-
-  if (contentHeight > availableHeight) {
-
-    document.documentElement.style.setProperty(
-
-      "--gap", "4px"
-
-    );
-
-    document.documentElement.style.setProperty(
-
-      "--panel-pad", "6px"
-
-    );
-
-    document.documentElement.style.setProperty(
-
-      "--hp-font", "40px"
-
-    );
-
-    document.documentElement.style.setProperty(
-
-      "--hp-button", "39px"
-
-    );
-
-    document.documentElement.style.setProperty(
-
-      "--move-button", "40px"
-
-    );
-
-    document.documentElement.style.setProperty(
-
-      "--reset-button", "34px"
-
-    );
-
-  }
-
-  contentHeight = app.scrollHeight;
-
-  // 最終的に入りきらない場合だけ全体縮小
+  // 最終的な安全調整
 
   const scale = Math.min(
 
@@ -1370,25 +1524,41 @@ function fitScreen() {
 
   );
 
-  app.style.transformOrigin = "top left";
+  app.style.transformOrigin =
 
-  app.style.transform = `scale(${scale})`;
+    "top left";
 
-  const finalWidth = visibleWidth * scale;
+  app.style.transform =
 
-  const finalHeight = contentHeight * scale;
+    `scale(${scale})`;
 
-  // 横と縦の中央に配置
+  const finalWidth =
+
+    screenWidth * scale;
+
+  const finalHeight =
+
+    contentHeight * scale;
 
   app.style.left =
 
-    ((visibleWidth - finalWidth) / 2) + "px";
+    ((screenWidth - finalWidth) / 2)
+
+    + "px";
 
   app.style.top =
 
-    ((visibleHeight - finalHeight) / 2) + "px";
+    ((screenHeight - finalHeight) / 2)
+
+    + "px";
 
 }
+
+/* ==================================
+
+   画面変更時の再計算
+
+================================== */
 
 let fitFrame = null;
 
@@ -1410,13 +1580,21 @@ function requestFit() {
 
 }
 
-window.addEventListener("resize", requestFit);
+window.addEventListener(
+
+  "resize",
+
+  requestFit
+
+);
 
 if (window.visualViewport) {
 
   window.visualViewport.addEventListener(
 
-    "resize", requestFit
+    "resize",
+
+    requestFit
 
   );
 
@@ -1424,7 +1602,9 @@ if (window.visualViewport) {
 
 window.addEventListener(
 
-  "orientationchange", requestFit
+  "orientationchange",
+
+  requestFit
 
 );
 
